@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Oregami2Configuration extends Configuration {
+public class ToDoConfiguration extends Configuration {
     @NotEmpty
     private String template;
 

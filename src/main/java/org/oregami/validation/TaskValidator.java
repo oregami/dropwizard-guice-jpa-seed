@@ -1,0 +1,66 @@
+package org.oregami.validation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.oregami.entities.Task;
+import org.oregami.entities.TaskDao;
+import org.oregami.service.FieldNames;
+import org.oregami.service.ServiceError;
+import org.oregami.service.ServiceErrorContext;
+import org.oregami.service.ServiceErrorMessage;
+
+public class TaskValidator {
+
+    private final TaskDao taskDao;
+
+    private final Task task;
+    
+    private final int minLenght = 3;
+
+    public TaskValidator(TaskDao taskDao, Task task) {
+        if (taskDao == null) {
+            throw new RuntimeException("org.oregami.taskvalidator.NoTaskDaoGiven");
+        }
+        if (task == null) {
+            throw new RuntimeException("org.oregami.taskvalidator.NoTaskGiven");
+        }
+
+        this.taskDao = taskDao;
+        this.task = task;
+    }
+
+    public List<ServiceError> validateForCreation() {
+        List<ServiceError> errors = new ArrayList<ServiceError>();
+
+        errors.addAll(validateRequiredFields());
+
+        return errors;
+
+    }
+
+    public List<ServiceError> validateRequiredFields() {
+        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+
+        if (StringUtils.isEmpty(task.getName())) {
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY));
+        }
+        else if (StringUtils.length(task.getName()) < minLenght) {
+        	errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT));
+        }
+
+
+
+        return errorMessages;
+    }
+
+	public List<ServiceError> validateForUpdate() {
+		
+        List<ServiceError> errors = new ArrayList<ServiceError>();
+
+        errors.addAll(validateRequiredFields());
+
+        return errors;
+	}
+}
