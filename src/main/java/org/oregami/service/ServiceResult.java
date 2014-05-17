@@ -9,8 +9,6 @@ import org.oregami.entities.BaseEntityUUID;
 
 /**
  * 
- * @author twendelmuth
- * 
  * @param <T>
  */
 public class ServiceResult<T extends BaseEntityUUID> {

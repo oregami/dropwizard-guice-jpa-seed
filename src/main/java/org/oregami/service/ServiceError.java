@@ -6,8 +6,6 @@ package org.oregami.service;
  * The messageName is a internal string used for translations.
  * The context defines in which field the error occurred (e.g. the web form field name).
  * 
- * @author twendelmuth
- * 
  */
 public class ServiceError {
 
@@ -20,10 +18,6 @@ public class ServiceError {
         this.messageName = messageName;
     }    
     
-//    public ServiceError(ServiceErrorMessage message) {
-//        this.messageName = message;
-//    }
-
 	public ServiceErrorContext getContext() {
 		return context;
 	}
