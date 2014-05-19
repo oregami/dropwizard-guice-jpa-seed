@@ -97,7 +97,7 @@
 									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.oregami.dropwizard.Oregami2Application</mainClass>
+									<mainClass>org.oregami.dropwizard.ToDoApplication</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
