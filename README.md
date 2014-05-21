@@ -13,3 +13,13 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later automatically be bound to web form fields in the client)
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
+
+Roadmap / TODOs
+=========================
+- more complex entities (1-to-n association)
+- Hypermedia support ([HATEOAS](http://en.wikipedia.org/wiki/HATEOAS))
+- Authentication
+- Authorization
+- Auditing/Versioning of data
+- connect Github project to [travis-ci.org](travis-ci.org)
+- create a corresponding [AngularJS](http://angularjs.org/) client project
