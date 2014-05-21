@@ -23,3 +23,9 @@ Roadmap / TODOs
 - Auditing/Versioning of data
 - REST unit tests ([REST assured](https://github.com/jayway/rest-assured) looks nice)
 - create a corresponding [AngularJS](http://angularjs.org/) client project
+
+
+about me
+=========================
+My name is [Sebastian Eichholz](http://wiki.oregami.org/pages/viewpage.action?pageId=327693).
+I am doing this to push on with the development of **Oregami**, the first completely open computer and video game database. Get more details on www.oregami.org !
