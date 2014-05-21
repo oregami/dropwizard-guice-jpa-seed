@@ -21,5 +21,5 @@ Roadmap / TODOs
 - Authentication
 - Authorization
 - Auditing/Versioning of data
-- connect Github project to [travis-ci.org](travis-ci.org)
+- REST unit tests ([REST assured](https://github.com/jayway/rest-assured) looks nice)
 - create a corresponding [AngularJS](http://angularjs.org/) client project
