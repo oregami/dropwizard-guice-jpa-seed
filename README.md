@@ -10,6 +10,6 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - suport for [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 - JPA entities with [UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier) as primary keys
 - a pattern for accessing and manipulation entities with HTTP REST calls (Resource => Service => DAO => entity)
-- a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later be bound to web form fields in the client)
+- a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later automatically be bound to web form fields in the client)
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
