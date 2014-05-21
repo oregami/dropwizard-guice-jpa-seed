@@ -17,7 +17,7 @@ public class TaskValidator {
 
     private final Task task;
     
-    private final int minLenght = 3;
+    private final int nameMinLenght = 3;
 
     public TaskValidator(TaskDao taskDao, Task task) {
         if (taskDao == null) {
@@ -46,8 +46,12 @@ public class TaskValidator {
         if (StringUtils.isEmpty(task.getName())) {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY));
         }
-        else if (StringUtils.length(task.getName()) < minLenght) {
+        else if (StringUtils.length(task.getName()) < nameMinLenght) {
         	errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT));
+        }
+        
+        if (StringUtils.isEmpty(task.getDescription())) {
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY));
         }
 
 

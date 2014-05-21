@@ -25,6 +25,7 @@ public class TestTaskValidator {
 	
 	ServiceError errorNameTooShort = new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT);
 	ServiceError errorNameEmpty = new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY);
+	ServiceError errorDescriptionEmpty = new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY);	
 	
 	@BeforeClass
 	public static void init() {
@@ -38,6 +39,7 @@ public class TestTaskValidator {
 	@Test
 	public void testNameEmpty() {
 		Task t = new Task(null);
+		t.setDescription("This is a description");
 		
 		TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
 		
@@ -49,12 +51,14 @@ public class TestTaskValidator {
 		
 		Assert.assertTrue(errors.contains(errorNameEmpty));
 		Assert.assertFalse(errors.contains(errorNameTooShort));
+		Assert.assertFalse(errors.contains(errorDescriptionEmpty));
 		
 	}
 	
 	@Test
 	public void testNoErrors() {
 		Task t = new Task("valid task name");
+		t.setDescription("This is a description");
 		
 		TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
 		
@@ -66,8 +70,10 @@ public class TestTaskValidator {
 		
 	}	
 	
+	@Test
 	public void testNameTooShort() {
 		Task t = new Task("aa");
+		t.setDescription("This is a description");
 		
 		TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
 		
@@ -78,7 +84,26 @@ public class TestTaskValidator {
 		Assert.assertEquals(1, errors.size());
 		
 		Assert.assertFalse(errors.contains(errorNameEmpty));
+		Assert.assertFalse(errors.contains(errorDescriptionEmpty));
 		Assert.assertTrue(errors.contains(errorNameTooShort));
+		
+	}	
+	
+	@Test
+	public void testDescriptionTooShort() {
+		Task t = new Task("Task name");
+		
+		TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
+		
+		List<ServiceError> errors = validator.validateForCreation();
+		System.out.println(errors.toString());
+		
+		Assert.assertFalse(errors.isEmpty());
+		Assert.assertEquals(1, errors.size());
+		
+		Assert.assertFalse(errors.contains(errorNameEmpty));
+		Assert.assertFalse(errors.contains(errorNameTooShort));
+		Assert.assertTrue(errors.contains(errorDescriptionEmpty));
 		
 	}	
 	

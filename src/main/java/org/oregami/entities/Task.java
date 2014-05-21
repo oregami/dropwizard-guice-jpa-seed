@@ -13,6 +13,8 @@ public class Task extends BaseEntityUUID {
 
 	private String name;
 	
+	private String description;
+	
 	private boolean finished = false;
 	
 	public Task(String name) {
@@ -36,6 +38,14 @@ public class Task extends BaseEntityUUID {
 
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 

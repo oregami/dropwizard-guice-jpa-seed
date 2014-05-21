@@ -12,7 +12,7 @@ public class TestServiceResult {
 		result.addMessage(new ServiceErrorContext(FieldNames.TASK_NAME),ServiceErrorMessage.TASK_TASKNAME_EMPTY);
 		
 		Assert.assertTrue(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY)));
-		Assert.assertFalse(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_FINISHED), ServiceErrorMessage.TASK_FINISHED_EMPTY)));
+		Assert.assertFalse(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY)));
 	}
 
 	
@@ -21,12 +21,12 @@ public class TestServiceResult {
 		ServiceResult<BaseEntityUUID> result = new ServiceResult<BaseEntityUUID>();
 		result.addMessage(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY);
 		result.addMessage(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT);
-		result.addMessage(new ServiceErrorContext(FieldNames.TASK_FINISHED), ServiceErrorMessage.TASK_FINISHED_EMPTY);
+		result.addMessage(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY);
 		
 		Assert.assertTrue(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY)));
 		Assert.assertTrue(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT)));
-		Assert.assertTrue(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_FINISHED), ServiceErrorMessage.TASK_FINISHED_EMPTY)));
-		Assert.assertFalse(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_FINISHED_EMPTY)));
+		Assert.assertTrue(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY)));
+		Assert.assertFalse(result.containsError(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY)));
 		
 		
 	}
