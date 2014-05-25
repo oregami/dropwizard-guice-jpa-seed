@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/oregami/dropwizard-guice-jpa-seed.png)](https://travis-ci.org/oregami/dropwizard-guice-jpa-seed)
+
 dropwizard-guice-jpa-seed
 =========================
 This a sample REST application written in Java. It's purpose is to create a generic project that can be used as a starting point for a new project, but also for learning efforts.
