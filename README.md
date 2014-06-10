@@ -15,3 +15,32 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later be bound to web form fields in the client)
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
+
+
+Start the application with the class "ToDoApplication" with the parameters "server todo.yml".
+
+List all tasks with:
+GET => http://localhost:8080/task
+
+Add a new task with:
+ POST => http://localhost:8080/task
+Header:
+ Content-Type:application/json
+JSON-Body e.g. :
+ {"name" : "task 1", "description" : "This is a description"}
+
+Modify a task:
+ PUT => http://localhost:8080/task/[id]
+Header:
+ Content-Type:application/json
+ Accept:application/json
+JSON-Body e.g.:
+ {
+    "id": "402880944687600101468760d9ea0000",
+    "version": "0",
+    "name": "task 1 with new name",
+    "description": "This is an updated description",
+    "finished": "false"
+ }
+
+I recommend you use the great chrome extension [Postman](http://getpostman.com) to make such HTTP calls!
