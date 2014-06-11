@@ -2,7 +2,7 @@
 
 dropwizard-guice-jpa-seed
 =========================
-This a sample REST application written in Java. It's purpose is to create a generic project that can be used as a starting point for a new project, but also for learning efforts.
+This a sample REST application written in Java. It's purpose is to create a generic project that can be used as a starting point for a new project, but also for learning efforts (I am building an open game database at www.oregami.org).
 
 - built on [Dropwizard](https://dropwizard.github.io/dropwizard/) version 0.7.0
 - dependency injection with [Google Guice](https://code.google.com/p/google-guice/)
