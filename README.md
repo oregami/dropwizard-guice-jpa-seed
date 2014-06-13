@@ -28,31 +28,31 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
         POST => http://localhost:8080/task
 
-Header:
+    Header:
 
-    Content-Type:application/json
+        Content-Type:application/json
 
-JSON-Body e.g. :
+    JSON-Body e.g. :
 
-     {"name" : "task 1", "description" : "This is a description"}
+        {"name" : "task 1", "description" : "This is a description"}
 
 * Modify a task:
 
         PUT => http://localhost:8080/task/[id]
 
-Header:
+    Header:
 
-    Content-Type:application/json
-    Accept:application/json
+        Content-Type:application/json
+        Accept:application/json
 
-JSON-Body e.g.:
+    JSON-Body e.g.:
 
-    {
-    "id": "402880944687600101468760d9ea0000",
-    "version": "0",
-    "name": "task 1 with new name",
-    "description": "This is an updated description",
-    "finished": "false"
-    }
+        {
+        "id": "402880944687600101468760d9ea0000",
+        "version": "0",
+        "name": "task 1 with new name",
+        "description": "This is an updated description",
+        "finished": "false"
+        }
 
 I recommend you use the great **chrome extension [Postman](http://getpostman.com)** to make such HTTP calls!
