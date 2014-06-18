@@ -43,6 +43,7 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 	}
 
 	@Override
+	@Transactional
 	public void delete(E entity) {
 		emf.get().remove(entity);
 	}

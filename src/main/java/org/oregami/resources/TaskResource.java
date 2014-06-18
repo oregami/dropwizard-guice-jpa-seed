@@ -1,9 +1,12 @@
 package org.oregami.resources;
 
+import io.dropwizard.auth.Auth;
+
 import java.util.List;
 
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -19,6 +22,7 @@ import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
+import org.oregami.user.User;
 
 import com.google.inject.Inject;
 
@@ -37,6 +41,17 @@ public class TaskResource {
 	public TaskResource() {
 	}
 	
+	
+	@Path("{id}")
+	@DELETE
+	public Response delete(@Auth User user, @PathParam("id") String id) {
+		Task task = taskDao.findOne(id);
+		if (task==null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		taskDao.delete(task);
+		return Response.ok().build();
+	}
 	  
 	@GET
 	public List<Task> list() {
