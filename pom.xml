@@ -26,7 +26,13 @@
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-auth</artifactId>
 			<version>${dropwizard.version}</version>
-		</dependency>		
+		</dependency>	
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-testing</artifactId>
+			<version>${dropwizard.version}</version>
+			<scope>test</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
@@ -34,6 +40,12 @@
 			<version>3.0</version>
 		</dependency>
 
+		<dependency>
+		      <groupId>com.jayway.restassured</groupId>
+		      <artifactId>rest-assured</artifactId>
+		      <version>2.3.2</version>
+		      <scope>test</scope>
+		</dependency>		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
