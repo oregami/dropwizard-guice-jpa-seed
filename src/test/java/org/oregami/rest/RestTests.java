@@ -38,5 +38,8 @@ public class RestTests {
 		response.then().body("name", Matchers.hasItems("task 1", "task 2"));
 		response.then().body("description", Matchers.hasItems("This is a description", "This is another description"));
 		
+		response.then().body("[0].name", Matchers.equalTo("task 1"));
+		response.then().body("[1].name", Matchers.equalTo("task 2"));
+		
 	}
 }
