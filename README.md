@@ -56,5 +56,11 @@ This a sample REST application written in Java. It's purpose is to create a gene
         "description": "This is an updated description",
         "finished": "false"
         }
+        
+* Remove a task: you must authenticate for this call with basic authentication (user = "user" and password="password")
+
+        DELETE => http://localhost:8080/task/[id]
+        
+        
 
 I recommend you use the great **chrome extension [Postman](http://getpostman.com)** to make such HTTP calls!
