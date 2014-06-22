@@ -17,3 +17,5 @@ nbproject/private/
 .settings/
 target/
 */target/*
+.idea
+*.iml
