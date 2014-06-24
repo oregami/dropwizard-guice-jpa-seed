@@ -18,6 +18,12 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
 
+# road map / things to do
+
+* versioning/auditing of entities with [hibernate envers](http://envers.jboss.org/)
+* hypermedia / HATEOAS
+
+
 # Usage
 
 * Start the application with the class "ToDoApplication" with the parameters "server todo.yml".
