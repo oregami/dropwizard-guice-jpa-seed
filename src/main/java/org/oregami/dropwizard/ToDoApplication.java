@@ -22,8 +22,9 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 
 public class ToDoApplication extends Application<ToDoConfiguration> {
 
-	public static final String JPA_UNIT = "data";
-	// "dataMysql";
+	public static final String JPA_UNIT =
+            "data";
+	        // "dataMysql";
 
 	private static final JpaPersistModule jpaPersistModule = new JpaPersistModule(JPA_UNIT);
 
