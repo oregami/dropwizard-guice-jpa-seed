@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.envers.Audited;
 
 @Entity
+@Audited
 @NamedQueries({@NamedQuery(name="Task.GetAll", query = "from Task t")})
 public class Task extends BaseEntityUUID {
 
