@@ -7,7 +7,7 @@
 
 	<properties>
 		<dropwizard.version>0.7.0</dropwizard.version>
-        <hibernate.version>4.3.4.Final</hibernate.version>
+        <hibernate.version>4.3.5.Final</hibernate.version>
 	</properties>
 
 
