@@ -70,6 +70,28 @@ public class TaskResource {
     		return Response.status(Response.Status.NOT_FOUND).build();
     	}
 	}
+
+    @GET
+    @Path("/{id}/revisions")
+    public Response getTaskRevisions(@PathParam("id") String id) {
+        List<Number> revisionList = taskDao.findRevisions(id);
+        if (revisionList!=null) {
+            return Response.ok(revisionList).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/revisions/{revision}")
+    public Response getTaskRevision(@PathParam("id") String id, @PathParam("revision") String revision) {
+        Task t = taskDao.findRevision(id, Integer.parseInt(revision));
+        if (t!=null) {
+            return Response.ok(t).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
     
 	@POST
 	public Response create(Task t) {

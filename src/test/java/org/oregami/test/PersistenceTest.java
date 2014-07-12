@@ -44,9 +44,6 @@ public class PersistenceTest {
 		}
 		entityManager.getTransaction().begin();
 		
-		//deletes are not necessary, because of the Rollback after every Test
-//		DatabaseFiller.getInstance().deleteGameData();
-//		DatabaseFiller.getInstance().deleteBaseListData();
 	}
 	
 	@After
@@ -86,6 +83,39 @@ public class PersistenceTest {
 		Assert.assertEquals(t2Loaded.getId(), id2);
 		Assert.assertEquals(t2Loaded, t2);		
 	}
+
+
+    @Test
+    public void testTaskRevisions() {
+        TaskDao taskDao = getInstance(TaskDao.class);
+
+        Task t1 = new Task("task 1");
+        String id1 = taskDao.save(t1);
+        Assert.assertNotNull("ID expected", id1);
+
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+
+        Task t1Loaded = taskDao.findOne(id1);
+        Assert.assertNotNull(t1Loaded);
+        Assert.assertEquals(t1Loaded.getId(), id1);
+        Assert.assertEquals(t1Loaded, t1);
+
+        t1Loaded.setDescription("update");
+        taskDao.update(t1Loaded);
+
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+
+        List<Number> revisions = taskDao.findRevisions(id1);
+        System.out.println(revisions);
+        Assert.assertNotNull(revisions);
+        Assert.assertEquals(2, revisions.size());
+
+        DatabaseUtils.clearDatabaseTables();
+    }
 	
 	
 }

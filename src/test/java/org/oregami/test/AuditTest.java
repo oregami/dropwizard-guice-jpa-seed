@@ -11,6 +11,7 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
+import org.hibernate.envers.query.AuditQueryCreator;
 import org.hibernate.envers.query.criteria.AuditCriterion;
 import org.junit.*;
 import org.oregami.dropwizard.ToDoApplication;
@@ -38,6 +39,18 @@ public class AuditTest {
 		persistService.start();
         entityManager = injector.getInstance(EntityManager.class);
 	}
+
+
+    @Before
+    public void initTest() {
+//        entityManager.getTransaction().begin();
+    }
+
+    @AfterClass
+    public static void finishTest() {
+        DatabaseUtils.clearDatabaseTables();
+    }
+
 	
 	private <T> T getInstance(Class<T> c) {
 		return injector.getInstance(c);
@@ -73,8 +86,21 @@ public class AuditTest {
 
         entityManager.getTransaction().begin();
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
-        auditReader.createQuery()
-                .forEntitiesAtRevision(Task.class, 1).getResultList();
+        List<Number> revisions = auditReader.getRevisions(Task.class,
+                t1.getId());
+        System.out.print(revisions);
+
+        Assert.assertEquals(2,revisions.size());
+
+        AuditReader reader = AuditReaderFactory.get(entityManager);
+
+        for (Number n : revisions) {
+            Task tRev = reader.find(Task.class, t1.getId(), n);
+            Assert.assertNotNull(tRev);
+            System.out.println("Revision " + n + ": " + tRev);
+        }
+
+
         entityManager.getTransaction().commit();
 	}
 	
