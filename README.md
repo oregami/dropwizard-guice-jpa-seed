@@ -11,6 +11,7 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - "Session-per-HTTP-request" with Guice [PersistentFilter](https://code.google.com/p/google-guice/wiki/JPA)
 - suport for [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 - JPA entities with [UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier) as primary keys
+- Auditing/Version control of entities with [hibernate envers](http://envers.jboss.org/)
 - Basic authentication for DELETE at /task ("user" + "password")
 - Integration tests with [rest-assured](https://code.google.com/p/rest-assured/)
 - a pattern for accessing and manipulation entities with HTTP REST calls (Resource => Service => DAO => entity)
@@ -20,7 +21,7 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
 # road map / things to do
 
-* versioning/auditing of entities with [hibernate envers](http://envers.jboss.org/)
+* more complex entities
 * hypermedia / HATEOAS
 
 
@@ -67,6 +68,17 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
         DELETE => http://localhost:8080/task/[id]
         
+* List all revision numbers of a task with:
+
+        GET => http://localhost:8080/task/[id]/revisions
+        
+* Show a single task with:
+
+        GET => http://localhost:8080/task/[id]      
+        
+* Show a special revision of a single task with:
+
+        GET => http://localhost:8080/task/[id]/revisions/[revisionNumber]
         
 
 I recommend you use the great **chrome extension [Postman](http://getpostman.com)** to make such HTTP calls!
