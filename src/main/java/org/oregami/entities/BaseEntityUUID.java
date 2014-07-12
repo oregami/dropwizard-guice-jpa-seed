@@ -48,20 +48,9 @@ public abstract class BaseEntityUUID implements Serializable
     @Column(name = "id", updatable = false, nullable = false)
     private String id = null;
  
-    @Version
-    @Column(name = "version")
-    private int version = 0;
- 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "veraenderung_zeitpunkt")
-    @Transient
-    private Date lastUpdate;
- 
     protected void copy(final BaseEntityUUID source)
     {
         this.id = source.id;
-        this.version = source.version;
-        this.lastUpdate = source.lastUpdate;
     }
  
     @Override
@@ -101,27 +90,6 @@ public abstract class BaseEntityUUID implements Serializable
         this.id = id;
     }
  
-    public int getVersion()
-    {
-        return this.version;
-    }
- 
-    @SuppressWarnings("unused")
-    private void setVersion(final int version)
-    {
-        this.version = version;
-    }
- 
-    public Date getLastUpdate()
-    {
-        return this.lastUpdate;
-    }
- 
-    public void setLastUpdate(final Date lastUpdate)
-    {
-        this.lastUpdate = lastUpdate;
-    }
-    
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
