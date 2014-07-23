@@ -1,6 +1,8 @@
 package org.oregami.test;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oregami.dropwizard.ToDoApplication;
+import org.oregami.entities.SubTask;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 
@@ -116,6 +119,83 @@ public class PersistenceTest {
 
         DatabaseUtils.clearDatabaseTables();
     }
+
+
+
+    @Test
+    public void testSubTask() {
+        TaskDao taskDao = getInstance(TaskDao.class);
+
+        Task t1 = new Task("task 1");
+
+        SubTask s1 = new SubTask();
+        s1.setDescription("subtask1");
+        t1.addSubTask(s1);
+
+        String id1 = taskDao.save(t1);
+        Assert.assertNotNull("ID expected", id1);
+        String sid1 = s1.getId();
+
+        List<Task> all = taskDao.findAll();
+        Assert.assertTrue("1 Task expected", all.size()==1);
+
+        Task taskLoaded = taskDao.findOne(id1);
+        Assert.assertNotNull(taskLoaded);
+        Assert.assertNotNull(taskLoaded.getSubTasks());
+        Assert.assertEquals(1, taskLoaded.getSubTasks().size());
+        SubTask s1loaded = taskLoaded.getSubTasks().iterator().next();
+        Assert.assertEquals(sid1, s1loaded.getId());
+
+        System.out.println(taskLoaded);
+        System.out.println(s1loaded);
+
+    }
+
+
+    @Test
+    public void testMultipleSubTask() {
+        TaskDao taskDao = getInstance(TaskDao.class);
+
+        Task t1 = new Task("task 1");
+
+        SubTask s1 = new SubTask();
+        s1.setDescription("subtask1");
+        t1.addSubTask(s1);
+
+        SubTask s2 = new SubTask();
+        s2.setDescription("subtask2");
+        t1.addSubTask(s2);
+
+        String id1 = taskDao.save(t1);
+        Assert.assertNotNull("ID expected", id1);
+        String sid1 = s1.getId();
+        String sid2 = s2.getId();
+
+        List<Task> all = taskDao.findAll();
+        Assert.assertTrue("1 Task expected", all.size()==1);
+
+        Task taskLoaded = taskDao.findOne(id1);
+        Assert.assertNotNull(taskLoaded);
+        Assert.assertNotNull(taskLoaded.getSubTasks());
+        Assert.assertEquals(2, taskLoaded.getSubTasks().size());
+
+        List<String> sidList = new ArrayList<String>();
+        sidList.add(sid1);
+        sidList.add(sid2);
+
+        Iterator<SubTask> subTaskIterator = taskLoaded.getSubTasks().iterator();
+        while (subTaskIterator.hasNext()) {
+            SubTask subTask = subTaskIterator.next();
+            Assert.assertTrue(sidList.contains(subTask.getId()));
+            sidList.remove(subTask.getId());
+        }
+
+
+
+    }
+
+
+
 	
 	
 }

@@ -1,10 +1,13 @@
 package org.oregami.entities;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Audited
@@ -14,11 +17,17 @@ public class Task extends BaseEntityUUID {
 	private static final long serialVersionUID = -6910022407899412272L;
 
 	private String name;
-	
+
+
 	private String description;
 	
 	private boolean finished = false;
-	
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
+    @JoinColumn
+    private final Set<SubTask> subTasks = new HashSet<SubTask>();
+
+
 	public Task(String name) {
 		this.setName(name);
 	}
@@ -49,6 +58,13 @@ public class Task extends BaseEntityUUID {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 
+
+    public Set<SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    public void addSubTask(SubTask s) {
+        getSubTasks().add(s);
+    }
 }

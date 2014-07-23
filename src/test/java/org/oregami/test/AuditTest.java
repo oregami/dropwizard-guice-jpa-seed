@@ -15,10 +15,12 @@ import org.hibernate.envers.query.AuditQueryCreator;
 import org.hibernate.envers.query.criteria.AuditCriterion;
 import org.junit.*;
 import org.oregami.dropwizard.ToDoApplication;
+import org.oregami.entities.SubTask;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 
 import javax.persistence.EntityManager;
+import java.util.Iterator;
 import java.util.List;
 
 public class AuditTest {
@@ -41,15 +43,20 @@ public class AuditTest {
 	}
 
 
-    @Before
-    public void initTest() {
+//    @Before
+//    public void initTest() {
 //        entityManager.getTransaction().begin();
-    }
+//    }
+//
+//    @After
+//    public void finishTest() {
+//        entityManager.getTransaction().rollback();
+//    }
 
-    @AfterClass
-    public static void finishTest() {
-        DatabaseUtils.clearDatabaseTables();
-    }
+//    @AfterClass
+//    public static void finishClass() {
+//        DatabaseUtils.clearDatabaseTables();
+//    }
 
 	
 	private <T> T getInstance(Class<T> c) {
@@ -78,10 +85,10 @@ public class AuditTest {
 
 
         entityManager.getTransaction().begin();
-        t1Loaded.setName("updated description");
-        taskDao.update(t1Loaded);
+        Task t1Loaded2 = taskDao.findOne(id1);
+        t1Loaded2.setName("updated description");
+        taskDao.update(t1Loaded2);
         entityManager.getTransaction().commit();
-
 
 
         entityManager.getTransaction().begin();
@@ -93,15 +100,72 @@ public class AuditTest {
         Assert.assertEquals(2,revisions.size());
 
         AuditReader reader = AuditReaderFactory.get(entityManager);
-
         for (Number n : revisions) {
             Task tRev = reader.find(Task.class, t1.getId(), n);
             Assert.assertNotNull(tRev);
             System.out.println("Revision " + n + ": " + tRev);
         }
 
-
         entityManager.getTransaction().commit();
+
+
+        entityManager.getTransaction().begin();
+        SubTask s1 = new SubTask();
+        s1.setDescription("subtask1");
+        t1.addSubTask(s1);
+        t1Loaded.addSubTask(s1);
+        taskDao.update(t1Loaded);
+        entityManager.getTransaction().commit();
+
+
+
+        entityManager.getTransaction().begin();
+        revisions = auditReader.getRevisions(Task.class,
+                t1.getId());
+        Assert.assertEquals(3,revisions.size());
+        for (Number n : revisions) {
+            Task tRev = reader.find(Task.class, t1.getId(), n);
+            Assert.assertNotNull(tRev);
+            System.out.println("Revision " + n + ": " + tRev);
+        }
+        entityManager.getTransaction().commit();
+
+
+        entityManager.getTransaction().begin();
+        t1Loaded = taskDao.findOne(id1);
+        Iterator<SubTask> subTaskIterator = t1Loaded.getSubTasks().iterator();
+        t1Loaded.setDescription("test for subtask update");
+        Assert.assertTrue(subTaskIterator.hasNext());
+        SubTask subTask = subTaskIterator.next();
+        Assert.assertNotNull(subTask);
+        subTask.setDescription("subtask 1 updated description");
+        taskDao.update(t1Loaded);
+        entityManager.getTransaction().commit();
+
+
+        entityManager.getTransaction().begin();
+        revisions = auditReader.getRevisions(Task.class,
+                t1.getId());
+        Assert.assertEquals(4,revisions.size());
+        for (Number n : revisions) {
+            Task tRev = reader.find(Task.class, t1.getId(), n);
+            Assert.assertNotNull(tRev);
+            System.out.println("Revision " + n + ": " + tRev);
+        }
+        entityManager.getTransaction().commit();
+
+
+        entityManager.getTransaction().begin();
+        t1Loaded = taskDao.findOne(id1);
+        taskDao.delete(t1Loaded);
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        all = taskDao.findAll();
+        Assert.assertTrue("0 Task expected", all.size() == 0);
+        entityManager.getTransaction().commit();
+
+
 	}
 	
 	

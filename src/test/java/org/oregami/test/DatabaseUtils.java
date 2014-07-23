@@ -22,8 +22,21 @@ public class DatabaseUtils {
         EntityManager entityManager = injector.getInstance(EntityManager.class);
 
         entityManager.getTransaction().begin();
+        entityManager.createNativeQuery("TRUNCATE TABLE SubTask").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE TABLE SubTask_HIST").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE TABLE Task_SubTask_HIST").executeUpdate();
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
         entityManager.createNativeQuery("TRUNCATE TABLE Task").executeUpdate();
         entityManager.getTransaction().commit();
+
+//        entityManager.createNativeQuery("TRUNCATE TABLE Task_HIST").executeUpdate();
+//        entityManager.createNativeQuery("TRUNCATE TABLE ToDoRevisionEntity").executeUpdate();
+
+
+
+
 
     }
 
