@@ -15,9 +15,7 @@ import org.hibernate.envers.query.AuditQueryCreator;
 import org.hibernate.envers.query.criteria.AuditCriterion;
 import org.junit.*;
 import org.oregami.dropwizard.ToDoApplication;
-import org.oregami.entities.SubTask;
-import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
+import org.oregami.entities.*;
 
 import javax.persistence.EntityManager;
 import java.util.Iterator;
@@ -95,7 +93,7 @@ public class AuditTest {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
         List<Number> revisions = auditReader.getRevisions(Task.class,
                 t1.getId());
-        System.out.print(revisions);
+        System.out.println("revisions: " + revisions);
 
         Assert.assertEquals(2,revisions.size());
 
@@ -167,6 +165,64 @@ public class AuditTest {
 
 
 	}
+
+
+    @Test
+    public void testLanguage() {
+        LanguageDao languageDao = getInstance(LanguageDao.class);
+
+        entityManager.getTransaction().begin();
+        Language en = new Language(Language.ENGLISH);
+        en.setDescription("description eng1");
+        languageDao.save(en);
+        Language de = new Language(Language.GERMAN);
+        de.setDescription("description de1");
+        languageDao.save(de);
+        List<Language> all = languageDao.findAll();
+        Assert.assertFalse(all.isEmpty());
+        Assert.assertEquals(2, all.size());
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        Language enLoaded = languageDao.findOne(en.getId());
+        enLoaded.setDescription("descriptopn en2");
+        languageDao.update(enLoaded);
+        all = languageDao.findAll();
+        Assert.assertFalse(all.isEmpty());
+        Assert.assertEquals(2, all.size());
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+        List<Number> revisions = auditReader.getRevisions(Language.class,
+                en.getId());
+        System.out.println("revisions: " + revisions);
+        Assert.assertEquals(2,revisions.size());
+        AuditReader reader = AuditReaderFactory.get(entityManager);
+        for (Number n : revisions) {
+            Language lRev = reader.find(Language.class, en.getId(), n);
+            Assert.assertNotNull(lRev);
+            System.out.println("Language rev " + n + ": " + lRev);
+        }
+        entityManager.getTransaction().commit();
+
+        //delete languages from DB:
+        entityManager.getTransaction().begin();
+        Language enToDelete = languageDao.findOne(en.getId());
+        languageDao.delete(enToDelete);
+        all = languageDao.findAll();
+        Assert.assertFalse(all.isEmpty());
+        Assert.assertEquals(1, all.size());
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        Language deLoaded = languageDao.findOne(de.getId());
+        languageDao.delete(deLoaded);
+        all = languageDao.findAll();
+        Assert.assertTrue(all.isEmpty());
+        entityManager.getTransaction().commit();
+
+    }
 	
 	
 }

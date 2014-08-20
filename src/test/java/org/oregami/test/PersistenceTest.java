@@ -13,9 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oregami.dropwizard.ToDoApplication;
-import org.oregami.entities.SubTask;
-import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
+import org.oregami.entities.*;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -190,7 +188,24 @@ public class PersistenceTest {
             sidList.remove(subTask.getId());
         }
 
+    }
 
+
+    @Test
+    public void testLanguage() {
+        LanguageDao languageDao = injector.getInstance(LanguageDao.class);
+        Language eng = new Language(Language.ENGLISH);
+        eng.setDescription("description eng1");
+        languageDao.save(eng);
+
+        Language de = new Language(Language.GERMAN);
+        de.setDescription("description de1");
+        languageDao.save(de);
+
+        List<Language> all = languageDao.findAll();
+
+        Assert.assertFalse(all.isEmpty());
+        Assert.assertEquals(2, all.size());
 
     }
 
