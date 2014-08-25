@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +19,6 @@ public class Task extends BaseEntityUUID {
 
 	private String name;
 
-
 	private String description;
 	
 	private boolean finished = false;
@@ -27,12 +27,16 @@ public class Task extends BaseEntityUUID {
     @JoinColumn
     private final Set<SubTask> subTasks = new HashSet<SubTask>();
 
+    @OneToOne
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    private Language language;
+
 
 	public Task(String name) {
 		this.setName(name);
 	}
 	
-	Task() {
+	public Task() {
 	}
 	
 	public String getName() {
@@ -66,5 +70,13 @@ public class Task extends BaseEntityUUID {
 
     public void addSubTask(SubTask s) {
         getSubTasks().add(s);
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

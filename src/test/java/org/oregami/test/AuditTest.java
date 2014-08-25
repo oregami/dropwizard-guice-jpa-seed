@@ -197,7 +197,7 @@ public class AuditTest {
         List<Number> revisions = auditReader.getRevisions(Language.class,
                 en.getId());
         System.out.println("revisions: " + revisions);
-        Assert.assertEquals(2,revisions.size());
+        Assert.assertEquals(2, revisions.size());
         AuditReader reader = AuditReaderFactory.get(entityManager);
         for (Number n : revisions) {
             Language lRev = reader.find(Language.class, en.getId(), n);
@@ -223,6 +223,98 @@ public class AuditTest {
         entityManager.getTransaction().commit();
 
     }
+
+
+    @Test
+    public void testTaskWithChangedLanguage() {
+
+
+        LanguageDao languageDao = getInstance(LanguageDao.class);
+
+        entityManager.getTransaction().begin();
+        Language en = new Language(Language.ENGLISH);
+        en.setDescription("description en1");
+        languageDao.save(en);
+        Language de = new Language(Language.GERMAN);
+        de.setDescription("description de1");
+        languageDao.save(de);
+        List<Language> allLanguages = languageDao.findAll();
+        Assert.assertFalse(allLanguages.isEmpty());
+        Assert.assertEquals(2, allLanguages.size());
+        entityManager.getTransaction().commit();
+
+
+
+        entityManager.getTransaction().begin();
+        TaskDao taskDao = getInstance(TaskDao.class);
+
+        Task t1 = new Task("task 1");
+        t1.setLanguage(en);
+        String id1 = taskDao.save(t1);
+        Assert.assertNotNull("ID expected", id1);
+
+        List<Task> all = taskDao.findAll();
+        Assert.assertTrue("1 Task expected", all.size() == 1);
+
+        Task t1Loaded = taskDao.findOne(id1);
+        Assert.assertNotNull(t1Loaded);
+        Assert.assertEquals(t1Loaded.getId(), id1);
+        Assert.assertEquals(t1Loaded, t1);
+        Assert.assertEquals(t1Loaded.getLanguage(), en);
+        System.out.println(t1Loaded);
+        entityManager.getTransaction().commit();
+
+
+        entityManager.getTransaction().begin();
+        Language enLoaded = languageDao.findOne(en.getId());
+        enLoaded.setDescription("descripton en2");
+        languageDao.update(enLoaded);
+        allLanguages = languageDao.findAll();
+        Assert.assertFalse(allLanguages.isEmpty());
+        Assert.assertEquals(2, allLanguages.size());
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        t1Loaded = taskDao.findOne(id1);
+        enLoaded = languageDao.findOne(en.getId());
+        Assert.assertEquals(t1Loaded.getLanguage(), enLoaded);
+        Assert.assertEquals(t1Loaded.getLanguage().getDescription(), enLoaded.getDescription());
+        System.out.println(t1Loaded);
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        t1Loaded = taskDao.findOne(id1);
+        t1Loaded.setLanguage(null);
+        taskDao.update(t1Loaded);
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        t1Loaded = taskDao.findOne(id1);
+        Assert.assertNull(t1Loaded.getLanguage());
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+        List<Number> revisions = auditReader.getRevisions(Task.class,
+                t1Loaded.getId());
+        System.out.println("task_revisions: " + revisions);
+        Assert.assertEquals(2, revisions.size());
+        AuditReader reader = AuditReaderFactory.get(entityManager);
+        for (Number n : revisions) {
+            Task tRev = reader.find(Task.class, t1Loaded.getId(), n);
+            Assert.assertNotNull(tRev);
+            System.out.println("Task_rev_" + n + ": " + tRev);
+        }
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        taskDao.delete(t1Loaded);
+        languageDao.delete(enLoaded);
+        languageDao.delete(de);
+        entityManager.getTransaction().commit();
+
+    }
+
 	
 	
 }

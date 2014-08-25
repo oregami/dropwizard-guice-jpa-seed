@@ -153,8 +153,14 @@ public class PersistenceTest {
     @Test
     public void testMultipleSubTask() {
         TaskDao taskDao = getInstance(TaskDao.class);
+        LanguageDao languageDao = injector.getInstance(LanguageDao.class);
+
+        Language de = new Language(Language.GERMAN);
+        de.setDescription("description de1");
+        languageDao.save(de);
 
         Task t1 = new Task("task 1");
+        t1.setLanguage(de);
 
         SubTask s1 = new SubTask();
         s1.setDescription("subtask1");
@@ -176,6 +182,7 @@ public class PersistenceTest {
         Assert.assertNotNull(taskLoaded);
         Assert.assertNotNull(taskLoaded.getSubTasks());
         Assert.assertEquals(2, taskLoaded.getSubTasks().size());
+        Assert.assertNotNull(taskLoaded.getLanguage());
 
         List<String> sidList = new ArrayList<String>();
         sidList.add(sid1);
@@ -208,6 +215,9 @@ public class PersistenceTest {
         Assert.assertEquals(2, all.size());
 
     }
+
+
+
 
 
 
