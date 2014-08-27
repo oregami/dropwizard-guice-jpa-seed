@@ -31,6 +31,10 @@ public class DatabaseUtils {
         entityManager.createNativeQuery("TRUNCATE TABLE Task").executeUpdate();
         entityManager.getTransaction().commit();
 
+        entityManager.getTransaction().begin();
+        entityManager.createNativeQuery("TRUNCATE TABLE Language").executeUpdate();
+        entityManager.getTransaction().commit();
+
 //        entityManager.createNativeQuery("TRUNCATE TABLE Task_HIST").executeUpdate();
 //        entityManager.createNativeQuery("TRUNCATE TABLE ToDoRevisionEntity").executeUpdate();
 
