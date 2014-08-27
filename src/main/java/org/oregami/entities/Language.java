@@ -1,5 +1,6 @@
 package org.oregami.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
@@ -13,7 +14,9 @@ import java.util.Set;
 @NamedQueries({@NamedQuery(name="Language.GetAll", query = "from Language l")})
 public class Language extends BaseEntityUUID {
 
-	private String name;
+    private static final long serialVersionUID = 1;
+
+    private String name;
 
 	private String description;
 
