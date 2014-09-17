@@ -82,3 +82,6 @@ This a sample REST application written in Java. It's purpose is to create a gene
         
 
 I recommend you use the great **chrome extension [Postman](http://getpostman.com)** to make such HTTP calls!
+
+# Data model
+![UML data model](http://wiki.oregami.org/download/attachments/7012444/DataModel.png?api=v2)
