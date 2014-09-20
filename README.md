@@ -19,6 +19,10 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
 
+# system architecture
+
+![](docs/system_architecture.png?raw=true)
+
 # road map / things to do
 
 * more complex entities
