@@ -19,6 +19,8 @@ This a sample REST application written in Java. It's purpose is to create a gene
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
 
+A first version of a **JavaScript client application (AngularJS)** is now available at https://github.com/oregami/angularjs-rest-client/
+
 # system architecture
 
 ![](docs/system_architecture.png?raw=true)
