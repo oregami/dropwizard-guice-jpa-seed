@@ -1,9 +1,12 @@
 package org.oregami.validation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.oregami.entities.SubTask;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.service.FieldNames;
@@ -36,9 +39,22 @@ public class TaskValidator {
 
         errors.addAll(validateRequiredFields());
 
+        errors.addAll(validateSubTasks());
+
         return errors;
 
     }
+
+    private List<ServiceError> validateSubTasks() {
+        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+        Set<SubTask> subTasks = task.getSubTasks();
+        for (SubTask subTask: subTasks ) {
+            SubTaskValidator subTaskValidator = new SubTaskValidator(subTask);
+            errorMessages.addAll(subTaskValidator.validateForCreation());
+        }
+        return errorMessages;
+    }
+
 
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
@@ -64,6 +80,8 @@ public class TaskValidator {
         List<ServiceError> errors = new ArrayList<ServiceError>();
 
         errors.addAll(validateRequiredFields());
+
+        errors.addAll(validateSubTasks());;
 
         return errors;
 	}
