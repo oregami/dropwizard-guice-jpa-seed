@@ -1,9 +1,14 @@
 package org.oregami.service;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  * Context af this error.
  * e.g. the field name of the web form
  */
+@EqualsAndHashCode()
+@ToString
 public class ServiceErrorContext {
 
 	/**
@@ -11,9 +16,19 @@ public class ServiceErrorContext {
 	 */
 	private String field;
 
+    /**
+     * The id of the object (if needed)
+     */
+    private String id;
+
 	public ServiceErrorContext(String field) {
 		this.field = field;
 	}
+
+    public ServiceErrorContext(String field, String id) {
+        this.field = field;
+        this.id = id;
+    }
 	
 	public String getField() {
 		return field;
@@ -23,30 +38,11 @@ public class ServiceErrorContext {
 		this.field = field;
 	}
 	
-	@Override
-	public String toString() {
-		return field;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        ServiceErrorContext context = (ServiceErrorContext) obj;
-        return (field == context.field
-                || (field != null && field.equals(context.field))
-                );
-	}
-	
-	@Override
-	public int hashCode() {
-		if (field==null) {
-			return 0;
-		}
-		return field.hashCode();
-	}
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
