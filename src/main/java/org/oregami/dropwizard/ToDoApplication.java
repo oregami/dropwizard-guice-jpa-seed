@@ -50,15 +50,18 @@ public class ToDoApplication extends Application<ToDoConfiguration> {
 
 		bootstrap.addBundle(guiceBundle);
 
-		persistService = guiceBundle.getInjector().getInstance(PersistService.class);
+//		persistService = guiceBundle.getInjector().getInstance(PersistService.class);
+//      persistService.start();
 		DatabaseFiller.getInstance().initData();
 		
 	}
 
 	@Override
 	public void run(ToDoConfiguration configuration, Environment environment) {
-		
-		Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+        environment.servlets().addFilter("persistFilter", guiceBundle.getInjector().getInstance(PersistFilter.class)).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+
+        Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 	    filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 	    filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
 	    filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
@@ -69,9 +72,8 @@ public class ToDoApplication extends Application<ToDoConfiguration> {
 //	    filter.setInitParameter("allow", "GET,PUT,POST,DELETE,OPTIONS");
 //	    filter.setInitParameter("preflightMaxAge", "5184000"); // 2 months
 		
-	    environment.servlets().addFilter("persistFilter", guiceBundle.getInjector().getInstance(PersistFilter.class)).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
-	    
-		environment.jersey().register(guiceBundle.getInjector().getInstance(TaskResource.class));
+
+        environment.jersey().register(guiceBundle.getInjector().getInstance(TaskResource.class));
 		
 		environment.jersey().register(new BasicAuthProvider<User>(new ToDoBasicAuthenticator(),
                 "only visible with valid user/password"));
