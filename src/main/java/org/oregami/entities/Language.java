@@ -1,9 +1,12 @@
 package org.oregami.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
+import org.joda.time.LocalDateTime;
+import org.oregami.data.CustomLocalDateTimeSerializer;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,6 +15,7 @@ import java.util.Set;
 @Entity
 @Audited
 @NamedQueries({@NamedQuery(name="Language.GetAll", query = "from Language l")})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Language extends BaseEntityUUID {
 
     private static final long serialVersionUID = 1;
@@ -19,6 +23,8 @@ public class Language extends BaseEntityUUID {
     private String name;
 
 	private String description;
+
+    private LocalDateTime changeTime = null;
 
 	public Language(String name) {
 		this.setName(name);
@@ -43,6 +49,18 @@ public class Language extends BaseEntityUUID {
 		this.description = description;
 	}
 
+    public LocalDateTime getChangeTime() {
+        return changeTime;
+    }
+
+    public void setChangeTime(LocalDateTime changeTime) {
+        this.changeTime = changeTime;
+    }
+
+    @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
+    public LocalDateTime getChangeTimeGui() {
+        return changeTime;
+    }
 
     public static final String GERMAN = "GERMAN";
     public static final String MANDARIN = "MANDARIN";

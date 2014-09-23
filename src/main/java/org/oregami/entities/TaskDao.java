@@ -4,8 +4,10 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
+import org.joda.time.LocalDateTime;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -56,5 +58,17 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
 
     }
 
+    @Override
+    @Transactional
+    public void update(Task entity) {
+        entity.setChangeTime(new LocalDateTime());
+        super.update(entity);
+    }
 
+    @Override
+    @Transactional
+    public String save(Task entity) {
+        entity.setChangeTime(new LocalDateTime());
+        return super.save(entity);
+    }
 }

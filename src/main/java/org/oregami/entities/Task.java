@@ -2,10 +2,16 @@ package org.oregami.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.joda.time.LocalDateTime;
+import org.oregami.data.CustomJsonDateDeserializer;
+import org.oregami.data.CustomLocalDateTimeSerializer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +19,7 @@ import java.util.Set;
 @Entity
 @Audited
 @NamedQueries({@NamedQuery(name="Task.GetAll", query = "from Task t")})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task extends BaseEntityUUID {
 
 	private static final long serialVersionUID = -6910022407899412272L;
@@ -22,6 +29,8 @@ public class Task extends BaseEntityUUID {
 	private String description;
 	
 	private boolean finished = false;
+
+    private LocalDateTime changeTime = null;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
     @JoinColumn
@@ -78,5 +87,19 @@ public class Task extends BaseEntityUUID {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+
+    public LocalDateTime getChangeTime() {
+        return changeTime;
+    }
+
+    public void setChangeTime(LocalDateTime changeTime) {
+        this.changeTime = changeTime;
+    }
+
+    @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
+    public LocalDateTime getChangeTimeGui() {
+        return changeTime;
     }
 }

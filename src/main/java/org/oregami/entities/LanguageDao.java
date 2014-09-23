@@ -2,8 +2,10 @@ package org.oregami.entities;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -44,6 +46,20 @@ public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
         Language tRev = reader.find(entityClass, id, revision);
         return tRev;
 
+    }
+
+    @Override
+    @Transactional
+    public void update(Language entity) {
+        entity.setChangeTime(new LocalDateTime());
+        super.update(entity);
+    }
+
+    @Override
+    @Transactional
+    public String save(Language entity) {
+        entity.setChangeTime(new LocalDateTime());
+        return super.save(entity);
     }
 
 
