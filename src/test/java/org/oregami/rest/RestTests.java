@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import com.jayway.restassured.http.ContentType;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 
 import org.hamcrest.Matchers;
@@ -14,9 +15,14 @@ import org.oregami.dropwizard.ToDoConfiguration;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Header;
 import com.jayway.restassured.response.Response;
+import org.oregami.entities.*;
+import org.oregami.service.LanguageService;
+import org.oregami.service.ServiceResult;
+import org.oregami.service.TaskService;
 import org.oregami.test.DatabaseUtils;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class RestTests {
 
@@ -49,22 +55,34 @@ public class RestTests {
     @Test
 	public void testAddTask() {
 
-		String newTaskJson = "{\"name\" : \"task 1\", \"description\" : \"This is a description\"}";
-		String newTaskJson2 = "{\"name\" : \"task 2\", \"description\" : \"This is another description\"}";
+        DatabaseUtils.clearDatabaseTables();
+
+        TaskDao taskDao = injector.getInstance(TaskDao.class);
+
+		String newTaskJson = "{\"name\" : \"REST task 1\", \"description\" : \"This is a description\"}";
+		String newTaskJson2 = "{\"name\" : \"REST task 2\", \"description\" : \"This is another description\"}";
 		Header jsonContentHeader = new Header("Content-Type", "application/json");
+
 		RestAssured.given().header(jsonContentHeader).request().body(newTaskJson).post("/task");
 		RestAssured.given().header(jsonContentHeader).request().body(newTaskJson2).post("/task");
-		
-		Response response = RestAssured.get("/task");
-		response.then().body("name", Matchers.hasItems("task 1", "task 2"));
-		response.then().body("description", Matchers.hasItems("This is a description", "This is another description"));
 
 
-        response.then().body("[0].name", Matchers.startsWith("task "));
-		response.then().body("[1].name", Matchers.startsWith("task "));
+        List<Task> taskList = taskDao.findAll();
+        System.out.println("taskList.size(): " + taskList.size());
+        Assert.assertEquals(2, taskList.size());
+//        System.out.println("taskList: " + taskList);
+        Response response = RestAssured.get("/task");
+        System.out.println(response.body().prettyPrint());
+		response.then().contentType(ContentType.JSON).body("name", Matchers.hasItems("REST task 1", "REST task 2"));
+		response.then().contentType(ContentType.JSON).body("description", Matchers.hasItems("This is a description", "This is another description"));
 
 
-        DatabaseUtils.clearDatabaseTables();
-		
+        response.then().body("[0].name", Matchers.startsWith("REST task "));
+		response.then().body("[1].name", Matchers.startsWith("REST task "));
+
+//
+//        DatabaseUtils.clearDatabaseTables();
+
 	}
+
 }
