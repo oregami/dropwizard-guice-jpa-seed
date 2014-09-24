@@ -3,14 +3,12 @@ package org.oregami.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 import org.joda.time.LocalDateTime;
-import org.oregami.data.CustomJsonDateDeserializer;
 import org.oregami.data.CustomLocalDateTimeSerializer;
 
 import java.util.HashSet;
