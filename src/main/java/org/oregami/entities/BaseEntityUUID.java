@@ -45,11 +45,9 @@ public abstract class BaseEntityUUID implements Serializable
     @Column(name = "id", updatable = false, nullable = false)
     private String id = null;
  
-    protected void copy(final BaseEntityUUID source)
-    {
-        this.id = source.id;
-    }
- 
+    @Transient
+    private String errorId;
+
     @Override
     public boolean equals(final Object obj)
     {
@@ -91,4 +89,13 @@ public abstract class BaseEntityUUID implements Serializable
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
 	}
+
+
+    public String getErrorId() {
+        return errorId;
+    }
+
+    public void setErrorId(String errorId) {
+        this.errorId = errorId;
+    }
 }
