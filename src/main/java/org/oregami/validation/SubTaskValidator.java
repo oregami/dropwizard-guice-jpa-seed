@@ -37,10 +37,14 @@ public class SubTaskValidator {
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
 
+        String id = subTask.getId();
+        if (id==null) {
+            id = subTask.getErrorId();
+        }
         if (StringUtils.isEmpty(subTask.getDescription())) {
             errorMessages.add(
                     new ServiceError(
-                            new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION, subTask.getId()),
+                            new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION, id),
                             ServiceErrorMessage.SUBTASK_DESCRIPTION_EMPTY
                     )
             );
@@ -48,7 +52,7 @@ public class SubTaskValidator {
         else if (StringUtils.length(subTask.getDescription()) < descriptionMinLenght) {
         	errorMessages.add(
                     new ServiceError(
-                            new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION, subTask.getId()),
+                            new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION, id),
                             ServiceErrorMessage.SUBTASK_DESCRIPTION_TOO_SHORT
                     )
             );
