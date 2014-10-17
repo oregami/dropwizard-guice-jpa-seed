@@ -47,6 +47,7 @@ public class TestLanguageService {
     @After
     public void rollbackTx() {
         entityManager.getTransaction().rollback();
+        errorDescriptionTooShort.getContext().setId(null);
     }
 
     @Test
@@ -103,8 +104,10 @@ public class TestLanguageService {
         ServiceResult<Language> updateResult = service.updateLanguage(l);
         Assert.assertTrue(updateResult.hasErrors());
         Assert.assertEquals(1, updateResult.getErrors().size());
+        errorDescriptionTooShort.getContext().setId(l.getId());
         Assert.assertTrue(updateResult.containsError(errorDescriptionTooShort));
         Assert.assertEquals(1, dao.findAll().size());
+
 
     }
 
