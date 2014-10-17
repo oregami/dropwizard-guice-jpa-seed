@@ -3,8 +3,6 @@ package org.oregami.validation;
 import org.apache.commons.lang.StringUtils;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
-import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;
@@ -47,7 +45,7 @@ public class LanguageValidator {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
         String id = language.getId();
         if (id==null) {
-            id = language.getErrorId();
+            id = language.getValidationId();
         }
         if (StringUtils.isEmpty(language.getName())) {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME, id), ServiceErrorMessage.LANGUAGE_NAME_EMPTY));

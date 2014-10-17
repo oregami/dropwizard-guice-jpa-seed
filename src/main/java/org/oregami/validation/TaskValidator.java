@@ -1,7 +1,6 @@
 package org.oregami.validation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +59,7 @@ public class TaskValidator {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
         String id = task.getId();
         if (id==null) {
-            id = task.getErrorId();
+            id = task.getValidationId();
         }
         if (StringUtils.isEmpty(task.getName())) {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME, id), ServiceErrorMessage.TASK_TASKNAME_EMPTY));

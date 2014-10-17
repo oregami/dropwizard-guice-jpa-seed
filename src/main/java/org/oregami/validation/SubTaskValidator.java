@@ -2,8 +2,6 @@ package org.oregami.validation;
 
 import org.apache.commons.lang.StringUtils;
 import org.oregami.entities.SubTask;
-import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;
@@ -39,7 +37,7 @@ public class SubTaskValidator {
 
         String id = subTask.getId();
         if (id==null) {
-            id = subTask.getErrorId();
+            id = subTask.getValidationId();
         }
         if (StringUtils.isEmpty(subTask.getDescription())) {
             errorMessages.add(

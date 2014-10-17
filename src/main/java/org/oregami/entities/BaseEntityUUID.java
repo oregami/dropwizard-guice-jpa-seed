@@ -17,16 +17,12 @@
 package org.oregami.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -44,9 +40,9 @@ public abstract class BaseEntityUUID implements Serializable
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id", updatable = false, nullable = false)
     private String id = null;
- 
+
     @Transient
-    private String errorId;
+    private String validationId;
 
     @Override
     public boolean equals(final Object obj)
@@ -73,7 +69,7 @@ public abstract class BaseEntityUUID implements Serializable
         }
         return false;
     }
- 
+
     public String getId()
     {
         return this.id;
@@ -91,11 +87,11 @@ public abstract class BaseEntityUUID implements Serializable
 	}
 
 
-    public String getErrorId() {
-        return errorId;
+    public String getValidationId() {
+        return validationId;
     }
 
-    public void setErrorId(String errorId) {
-        this.errorId = errorId;
+    public void setValidationId(String validationId) {
+        this.validationId = validationId;
     }
 }
