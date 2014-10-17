@@ -58,16 +58,19 @@ public class TaskValidator {
 
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
-
+        String id = task.getId();
+        if (id==null) {
+            id = task.getErrorId();
+        }
         if (StringUtils.isEmpty(task.getName())) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_EMPTY));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME, id), ServiceErrorMessage.TASK_TASKNAME_EMPTY));
         }
         else if (StringUtils.length(task.getName()) < nameMinLenght) {
-        	errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT));
+        	errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME, id), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT));
         }
         
         if (StringUtils.isEmpty(task.getDescription())) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION, id), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY));
         }
 
 

@@ -45,20 +45,23 @@ public class LanguageValidator {
 
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<ServiceError>();
-
+        String id = language.getId();
+        if (id==null) {
+            id = language.getErrorId();
+        }
         if (StringUtils.isEmpty(language.getName())) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_EMPTY));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME, id), ServiceErrorMessage.LANGUAGE_NAME_EMPTY));
         }
         else if (StringUtils.length(language.getName()) < nameMinLenght) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_TOO_SHORT));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME, id), ServiceErrorMessage.LANGUAGE_NAME_TOO_SHORT));
         }
 
 
         if (StringUtils.isEmpty(language.getDescription())) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION), ServiceErrorMessage.LANGUAGE_DESCRIPTION_EMPTY));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION, id), ServiceErrorMessage.LANGUAGE_DESCRIPTION_EMPTY));
         }
         else if (StringUtils.length(language.getDescription()) < descriptionMinLenght) {
-            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION), ServiceErrorMessage.LANGUAGE_DESCRIPTION_TOO_SHORT));
+            errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION, id), ServiceErrorMessage.LANGUAGE_DESCRIPTION_TOO_SHORT));
         }
 
 
