@@ -1,6 +1,7 @@
 package org.oregami.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
@@ -41,9 +42,18 @@ public class TaskService {
         }
 
         return new ServiceResult<Task>(taskData, errorMessages);
-    }    
+    }
 
-	private TaskValidator buildTaskValidator(Task newTask) {
+    public void deleteTask(String taskId) {
+        Task task = taskDao.findOne(taskId);
+        if (task==null) {
+            throw new NoSuchElementException();
+        }
+        taskDao.delete(task);
+
+    }
+
+    private TaskValidator buildTaskValidator(Task newTask) {
 		return new TaskValidator(this.taskDao, newTask);
 	}
 }
