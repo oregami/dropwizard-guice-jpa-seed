@@ -2,7 +2,9 @@ package org.oregami.resources;
 
 import io.dropwizard.auth.Auth;
 
+import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.Consumes;
@@ -41,17 +43,6 @@ public class TaskResource {
 	public TaskResource() {
 	}
 	
-	
-	@Path("{id}")
-	@DELETE
-	public Response delete(@Auth User user, @PathParam("id") String id) {
-		Task task = taskDao.findOne(id);
-		if (task==null) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		taskDao.delete(task);
-		return Response.ok().build();
-	}
 	  
 	@GET
 	public List<Task> list() {
@@ -102,7 +93,7 @@ public class TaskResource {
 						.type("text/json")
 		                .entity(serviceResult.getErrors()).build();
 			}
-			return Response.ok().build();
+			return Response.created(new URI(serviceResult.getResult().getId())).build();
 		} catch (Exception e) {
 			return Response.status(Status.CONFLICT).type("text/plain")
 	                .entity(e.getMessage()).build();
@@ -129,6 +120,20 @@ public class TaskResource {
 			return Response.status(Response.Status.BAD_REQUEST).tag("OptimisticLockException").build();
 		}
 		return Response.status(Response.Status.ACCEPTED).entity(t).build();
-	}		
-	
+	}
+
+
+    @DELETE
+    @Path("{id}")
+    public Response delete(
+            //@Auth User user,
+            @PathParam("id") String id) {
+        try {
+            taskService.deleteTask(id);
+        } catch (NoSuchElementException e) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok().build();
+
+    }
 }
