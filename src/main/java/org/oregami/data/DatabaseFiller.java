@@ -55,6 +55,13 @@ public class DatabaseFiller {
         if (languageServiceResult.hasErrors()) {
             throw new RuntimeException(languageServiceResult.getErrors().toString());
         }
+
+        Language german = new Language("german");
+        german.setDescription("This is the german language");
+        languageServiceResult = languageService.createNewLanguage(german);
+        if (languageServiceResult.hasErrors()) {
+            throw new RuntimeException(languageServiceResult.getErrors().toString());
+        }
     }
 
     private void addTasks() {
