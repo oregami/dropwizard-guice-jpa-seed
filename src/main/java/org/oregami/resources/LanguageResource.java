@@ -34,12 +34,18 @@ public class LanguageResource {
 
 	@Path("{id}")
 	@DELETE
-	public Response delete(@Auth User user, @PathParam("id") String id) {
+	public Response delete(
+            //@Auth User user,
+            @PathParam("id") String id) {
 		Language l = languageDao.findOne(id);
 		if (l==null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		languageDao.delete(l);
+		try {
+            languageDao.delete(l);
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
 		return Response.ok().build();
 	}
 
