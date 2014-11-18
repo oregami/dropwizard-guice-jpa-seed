@@ -1,13 +1,11 @@
 package org.oregami.resources;
 
 import com.google.inject.Inject;
-import io.dropwizard.auth.Auth;
 import org.apache.log4j.Logger;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
 import org.oregami.service.LanguageService;
 import org.oregami.service.ServiceResult;
-import org.oregami.user.User;
 
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.*;
@@ -125,6 +123,6 @@ public class LanguageResource {
 			return Response.status(Status.BAD_REQUEST).tag("OptimisticLockException").build();
 		}
 		return Response.status(Status.ACCEPTED).entity(t).build();
-	}		
-	
+	}
+
 }
