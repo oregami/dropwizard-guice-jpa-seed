@@ -24,7 +24,6 @@ import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
-import org.oregami.user.User;
 
 import com.google.inject.Inject;
 
@@ -36,21 +35,21 @@ public class TaskResource {
 
 	@Inject
 	private TaskDao taskDao;
-	
+
 	@Inject
 	private TaskService taskService;
-	
+
 	public TaskResource() {
 	}
-	
-	  
+
+
 	@GET
 	public List<Task> list() {
 		List<Task> ret = null;
 		ret = taskDao.findAll();
 		return ret;
 	}
-	
+
     @GET
     @Path("/{id}")
 	public Response getTask(@PathParam("id") String id) {
@@ -83,7 +82,7 @@ public class TaskResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
-    
+
 	@POST
 	public Response create(Task t) {
 		try {
@@ -99,9 +98,9 @@ public class TaskResource {
 	                .entity(e.getMessage()).build();
 		}
 
-	} 
-	
-	
+	}
+
+
 	@PUT
 	@Path("{id}")
 	public Response update(@PathParam("id") String id, Task t) {
@@ -114,7 +113,7 @@ public class TaskResource {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
 		                .entity(serviceResult.getErrors()).build();
-			}			
+			}
 		} catch (OptimisticLockException e) {
 			Logger.getLogger(this.getClass()).warn("OptimisticLockException", e);
 			return Response.status(Response.Status.BAD_REQUEST).tag("OptimisticLockException").build();
