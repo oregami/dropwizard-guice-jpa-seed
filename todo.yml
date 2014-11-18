@@ -12,5 +12,8 @@ logging:
 
     org.hibernate.SQL: ALL
 
+    com.github.toastshaman: DEBUG
+
   appenders:
     - type: console
+      logFormat: "%logger{5}: %message%n"
