@@ -12,7 +12,7 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - suport for [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 - JPA entities with [UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier) as primary keys
 - Auditing/Version control of entities with [hibernate envers](http://envers.jboss.org/)
-- Basic authentication for DELETE at /task ("user" + "password")
+- authentication with JSON Web Token (work in progress)
 - Integration tests with [rest-assured](https://code.google.com/p/rest-assured/)
 - a pattern for accessing and manipulation entities with HTTP REST calls (Resource => Service => DAO => entity)
 - a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later be bound to web form fields in the client)
