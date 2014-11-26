@@ -16,13 +16,12 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Header;
 import com.jayway.restassured.response.Response;
 import org.oregami.entities.*;
-import org.oregami.service.LanguageService;
-import org.oregami.service.ServiceResult;
-import org.oregami.service.TaskService;
 import org.oregami.test.DatabaseUtils;
 
 import javax.persistence.EntityManager;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RestTests {
 
@@ -84,5 +83,53 @@ public class RestTests {
 //        DatabaseUtils.clearDatabaseTables();
 
 	}
+
+  @Test
+  public void authenticateSuccess() {
+
+    Header header = new Header("Content-Type", "application/x-www-form-urlencoded");
+    Response response = RestAssured.given().formParam("username", "user1").formParam("password", "password1").header(header).request().post("/jwt/login");
+    response.then().contentType(ContentType.JSON).statusCode(200);
+    response.then().contentType(ContentType.JSON).body("token", Matchers.notNullValue());
+    response.then().contentType(ContentType.JSON).body("token", Matchers.containsString("."));
+
+  }
+
+  @Test
+  public void authenticateErrorWrongPassword() {
+    //wrong password => no valid status code, no token
+    Header header = new Header("Content-Type", "application/x-www-form-urlencoded");
+    Response response = RestAssured.given().formParam("username", "user1").formParam("password", "nonsense").header(header).request().post("/jwt/login");
+    response.then().contentType(ContentType.JSON).statusCode(Matchers.greaterThan(399));
+    response.then().contentType(ContentType.JSON).body(Matchers.isEmptyString());
+
+  }
+
+  @Test
+  public void authenticateErrorNoUsernameOrNoPassword() {
+    //wrong password => no valid status code, no token
+    Header header = new Header("Content-Type", "application/x-www-form-urlencoded");
+    Response response = RestAssured.given()
+      .formParam("username", "user1")
+      //.formParam("password", "nonsense")
+      .header(header).request().post("/jwt/login");
+    response.then().contentType(ContentType.JSON).statusCode(Matchers.greaterThan(399));
+    response.then().contentType(ContentType.JSON).body(Matchers.isEmptyString());
+
+    response = RestAssured.given()
+//      .formParam("username", "user1")
+      .formParam("password", "nonsense")
+      .header(header).request().post("/jwt/login");
+    response.then().contentType(ContentType.JSON).statusCode(Matchers.greaterThan(399));
+    response.then().contentType(ContentType.JSON).body(Matchers.isEmptyString());
+
+    response = RestAssured.given()
+//      .formParam("username", "user1")
+//      .formParam("password", "nonsense")
+      .header(header).request().post("/jwt/login");
+    response.then().contentType(ContentType.JSON).statusCode(Matchers.greaterThan(399));
+    response.then().contentType(ContentType.JSON).body(Matchers.isEmptyString());
+
+  }
 
 }
