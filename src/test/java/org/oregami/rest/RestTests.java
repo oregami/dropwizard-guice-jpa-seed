@@ -19,9 +19,7 @@ import org.oregami.entities.*;
 import org.oregami.test.DatabaseUtils;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RestTests {
 
