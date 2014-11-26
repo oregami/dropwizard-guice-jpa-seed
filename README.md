@@ -70,7 +70,7 @@ A first version of a **JavaScript client application (AngularJS)** is now availa
         "finished": "false"
         }
         
-* Remove a task: you must authenticate for this call with basic authentication (user = "user" and password="password")
+* Remove a task:
 
         DELETE => http://localhost:8080/task/[id]
         
@@ -86,7 +86,16 @@ A first version of a **JavaScript client application (AngularJS)** is now availa
 
         GET => http://localhost:8080/task/[id]/revisions/[revisionNumber]
         
+* Create JSON Web Token for authentication:
+        
+        POST => http://localhost:8080/jwt/login?username=[username]&password=[password]
+        e.g. with user1/password1 or user2/password2
 
+* Check if your JSON Web Token is valid for authentication:
+
+        GET => http://localhost:8080/jwt/test
+        Authentication-Header: "Bearer [token]"
+        
 I recommend you use the great **chrome extension [Postman](http://getpostman.com)** to make such HTTP calls!
 
 # Data model
