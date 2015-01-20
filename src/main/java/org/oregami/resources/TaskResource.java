@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.oregami.dropwizard.User;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.service.ServiceResult;
@@ -45,8 +46,7 @@ public class TaskResource {
 
 	@GET
 	public List<Task> list() {
-		List<Task> ret = null;
-		ret = taskDao.findAll();
+		List<Task> ret = taskDao.findAll();
 		return ret;
 	}
 
@@ -125,7 +125,7 @@ public class TaskResource {
     @DELETE
     @Path("{id}")
     public Response delete(
-            //@Auth User user,
+			@Auth User user,
             @PathParam("id") String id) {
         try {
             taskService.deleteTask(id);
