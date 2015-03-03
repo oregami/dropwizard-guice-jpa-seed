@@ -84,7 +84,9 @@ public class TaskResource {
     }
 
 	@POST
-	public Response create(Task t) {
+	public Response create(
+            @Auth User user,
+            Task t) {
 		try {
 			ServiceResult<Task> serviceResult = taskService.createNewTask(t);
 			if (serviceResult.hasErrors()) {
@@ -103,7 +105,9 @@ public class TaskResource {
 
 	@PUT
 	@Path("{id}")
-	public Response update(@PathParam("id") String id, Task t) {
+	public Response update(
+            @Auth User user,
+            @PathParam("id") String id, Task t) {
 		if (t.getId()==null) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
