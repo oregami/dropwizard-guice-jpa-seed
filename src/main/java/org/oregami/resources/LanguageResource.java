@@ -3,10 +3,12 @@ package org.oregami.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import org.apache.log4j.Logger;
+import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.User;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
 import org.oregami.service.LanguageService;
+import org.oregami.service.ServiceCallContext;
 import org.oregami.service.ServiceResult;
 
 import javax.persistence.OptimisticLockException;
@@ -23,10 +25,10 @@ import java.util.List;
 public class LanguageResource {
 
 	@Inject
-	private LanguageDao languageDao;
+	private LanguageDao languageDao = null;
 
 	@Inject
-	private LanguageService languageService;
+	private LanguageService languageService = null;
 
 	public LanguageResource() {
 	}
@@ -70,7 +72,7 @@ public class LanguageResource {
     @GET
     @Path("/{id}/revisions")
     public Response getLanguageRevisions(@PathParam("id") String id) {
-        List<Number> revisionList = languageDao.findRevisions(id);
+        List<RevisionInfo> revisionList = languageDao.findRevisions(id);
         if (revisionList!=null) {
             return Response.ok(revisionList).build();
         } else {
@@ -94,7 +96,8 @@ public class LanguageResource {
             @Auth User user,
             Language t) {
 		try {
-			ServiceResult<Language> serviceResult = languageService.createNewLanguage(t);
+            ServiceCallContext context = new ServiceCallContext(user);
+            ServiceResult<Language> serviceResult = languageService.createNewLanguage(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
@@ -118,7 +121,8 @@ public class LanguageResource {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 		try {
-			ServiceResult<Language> serviceResult = languageService.updateLanguage(t);
+            ServiceCallContext context = new ServiceCallContext(user);
+            ServiceResult<Language> serviceResult = languageService.updateLanguage(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")

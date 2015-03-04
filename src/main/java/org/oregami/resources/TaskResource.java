@@ -4,6 +4,7 @@ import io.dropwizard.auth.Auth;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.persistence.OptimisticLockException;
@@ -20,9 +21,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.User;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
+import org.oregami.service.ServiceCallContext;
 import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
 
@@ -35,10 +38,10 @@ import com.google.inject.Inject;
 public class TaskResource {
 
 	@Inject
-	private TaskDao taskDao;
+	private TaskDao taskDao = null;
 
 	@Inject
-	private TaskService taskService;
+	private TaskService taskService = null;
 
 	public TaskResource() {
 	}
@@ -64,7 +67,7 @@ public class TaskResource {
     @GET
     @Path("/{id}/revisions")
     public Response getTaskRevisions(@PathParam("id") String id) {
-        List<Number> revisionList = taskDao.findRevisions(id);
+        List<RevisionInfo> revisionList = taskDao.findRevisions(id);
         if (revisionList!=null) {
             return Response.ok(revisionList).build();
         } else {
@@ -88,7 +91,8 @@ public class TaskResource {
             @Auth User user,
             Task t) {
 		try {
-			ServiceResult<Task> serviceResult = taskService.createNewTask(t);
+            ServiceCallContext context = new ServiceCallContext(user);
+            ServiceResult<Task> serviceResult = taskService.createNewTask(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
@@ -112,7 +116,8 @@ public class TaskResource {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		try {
-			ServiceResult<Task> serviceResult = taskService.updateTask(t);
+            ServiceCallContext context = new ServiceCallContext(user);
+            ServiceResult<Task> serviceResult = taskService.updateTask(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")

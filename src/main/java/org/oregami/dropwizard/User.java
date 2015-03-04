@@ -1,18 +1,26 @@
 package org.oregami.dropwizard;
 
+import java.util.UUID;
+
 public class User {
 
-  public User(String username) {
-    this.username = username;
-  }
+    public User(String username) {
+        this.username = username;
+        this.userId = UUID.randomUUID().toString();
+    }
 
-  String username;
+    private final String userId;
+    String username;
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public String getUserId() {
+        return userId;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

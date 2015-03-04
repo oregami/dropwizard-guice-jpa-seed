@@ -8,12 +8,10 @@ import com.google.inject.persist.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.joda.time.LocalDateTime;
+import org.oregami.data.RevisionInfo;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
 
@@ -22,26 +20,28 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
 		super(emf);
 		entityClass=Task.class;
 	}
-	
+
 	public Task findByExactName(String name) {
 		Task t = (Task) getEntityManager()
-        		.createNativeQuery("SELECT * FROM Task t where lower(r.name) = :value ", Task.class).setParameter("value", name.toLowerCase()).getSingleResult(); 
+        		.createNativeQuery("SELECT * FROM Task t where lower(r.name) = :value ", Task.class).setParameter("value", name.toLowerCase()).getSingleResult();
         return t;
     }
 
 
-    public List<Number> findRevisions(String id) {
+    public List<RevisionInfo> findRevisions(String id) {
+
+        List<RevisionInfo> list = new ArrayList<>();
 
         AuditReader reader = AuditReaderFactory.get(getEntityManager());
 
         List<Number> revisions = reader.getRevisions(Task.class, id);
 
-//        for (Number n : revisions) {
-//            Task tRev = reader.find(Task.class, id, n);
-//            System.out.println(tRev);
-//        }
+        for (Number n : revisions) {
+            CustomRevisionEntity revEntity = reader.findRevision(CustomRevisionEntity.class, n);
+            list.add(new RevisionInfo(n, revEntity));
+        }
 
-        return revisions;
+        return list;
 
     }
 

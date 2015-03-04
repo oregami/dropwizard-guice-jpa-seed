@@ -3,6 +3,7 @@ package org.oregami.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.oregami.entities.CustomRevisionListener;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.validation.TaskValidator;
@@ -13,8 +14,8 @@ public class TaskService {
 
 	@Inject
 	private TaskDao taskDao;
-	
-    public ServiceResult<Task> createNewTask(Task taskData) {
+
+    public ServiceResult<Task> createNewTask(Task taskData, ServiceCallContext context) {
         TaskValidator validator = buildTaskValidator(taskData);
 
         List<ServiceError> errorMessages = validator.validateForCreation();
@@ -23,13 +24,14 @@ public class TaskService {
 
         if (errorMessages.size() == 0) {
             task = taskData;
+            CustomRevisionListener.context.set(context);
             taskDao.save(task);
         }
 
         return new ServiceResult<Task>(taskData, errorMessages);
     }
-    
-    public ServiceResult<Task> updateTask(Task taskData) {
+
+    public ServiceResult<Task> updateTask(Task taskData, ServiceCallContext context) {
         TaskValidator validator = buildTaskValidator(taskData);
 
         List<ServiceError> errorMessages = validator.validateForUpdate();
@@ -38,6 +40,7 @@ public class TaskService {
 
         if (errorMessages.size() == 0) {
             task = taskData;
+            CustomRevisionListener.context.set(context);
             taskDao.update(task);
         }
 

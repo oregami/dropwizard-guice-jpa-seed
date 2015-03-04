@@ -6,8 +6,10 @@ import com.google.inject.persist.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.joda.time.LocalDateTime;
+import org.oregami.data.RevisionInfo;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
@@ -25,14 +27,15 @@ public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
     }
 
 
-    public List<Number> findRevisions(String id) {
-
+    public List<RevisionInfo> findRevisions(String id) {
+        List<RevisionInfo> list = new ArrayList<>();
         AuditReader reader = AuditReaderFactory.get(getEntityManager());
-
-        List<Number> revisions = reader.getRevisions(entityClass, id);
-
-        return revisions;
-
+        List<Number> revisions = reader.getRevisions(Language.class, id);
+        for (Number n : revisions) {
+            CustomRevisionEntity revEntity = reader.findRevision(CustomRevisionEntity.class, n);
+            list.add(new RevisionInfo(n, revEntity));
+        }
+        return list;
     }
 
     public Language findRevision(String id, Number revision) {

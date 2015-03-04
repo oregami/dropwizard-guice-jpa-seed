@@ -22,12 +22,12 @@ import org.oregami.service.TaskService;
 public class DatabaseFiller {
 
 	Logger logger = Logger.getLogger(DatabaseFiller.class);
-	
+
 	static DatabaseFiller instance = null;
-	
+
 	static Injector injector;
-	
-	
+
+
 	@Transactional
 	public void initData() {
 		addLanguages();
@@ -45,20 +45,20 @@ public class DatabaseFiller {
 			persistService.start();
 		}
 		return instance;
-	}	
+	}
 
 	private void addLanguages() {
         LanguageService languageService = injector.getInstance(LanguageService.class);
         Language english = new Language("english");
         english.setDescription("This is the english language");
-        ServiceResult<Language> languageServiceResult = languageService.createNewLanguage(english);
+        ServiceResult<Language> languageServiceResult = languageService.createNewLanguage(english, null);
         if (languageServiceResult.hasErrors()) {
             throw new RuntimeException(languageServiceResult.getErrors().toString());
         }
 
         Language german = new Language("german");
         german.setDescription("This is the german language");
-        languageServiceResult = languageService.createNewLanguage(german);
+        languageServiceResult = languageService.createNewLanguage(german, null);
         if (languageServiceResult.hasErrors()) {
             throw new RuntimeException(languageServiceResult.getErrors().toString());
         }
@@ -75,7 +75,7 @@ public class DatabaseFiller {
         sub1.setDescription("this a subtask 1");
         t1.addSubTask(sub1);
 
-        ServiceResult<Task> taskServiceResult = taskService.createNewTask(t1);
+        ServiceResult<Task> taskServiceResult = taskService.createNewTask(t1, null);
         if (taskServiceResult.hasErrors()) {
             throw new RuntimeException(taskServiceResult.getErrors().toString());
         }
@@ -83,7 +83,7 @@ public class DatabaseFiller {
         Task t2 = new Task("task 2");
         t2.setDescription("This is task 2");
         t2.setLanguage(languageDao.findByExactName("english"));
-        taskServiceResult = taskService.createNewTask(t2);
+        taskServiceResult = taskService.createNewTask(t2, null);
         if (taskServiceResult.hasErrors()) {
             throw new RuntimeException(taskServiceResult.getErrors().toString());
         }

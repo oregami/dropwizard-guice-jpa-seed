@@ -29,7 +29,7 @@ public class AuditTest {
 
 	public AuditTest() {
 	}
-	
+
 	@BeforeClass
 	public static void init() {
 		JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
@@ -39,6 +39,11 @@ public class AuditTest {
 		persistService.start();
         entityManager = injector.getInstance(EntityManager.class);
 	}
+
+    @AfterClass
+    public static void finishClass() {
+        DatabaseUtils.clearDatabaseTables();
+    }
 
 
 //    @Before
@@ -56,22 +61,22 @@ public class AuditTest {
 //        DatabaseUtils.clearDatabaseTables();
 //    }
 
-	
+
 	private <T> T getInstance(Class<T> c) {
 		return injector.getInstance(c);
 	}
 
-	
+
 	@Test
 	public void testTask() {
 
         entityManager.getTransaction().begin();
 		TaskDao taskDao = getInstance(TaskDao.class);
-		
+
 		Task t1 = new Task("task 1");
 		String id1 = taskDao.save(t1);
 		Assert.assertNotNull("ID expected", id1);
-		
+
 		List<Task> all = taskDao.findAll();
 		Assert.assertTrue("1 Task expected", all.size()==1);
 
@@ -315,6 +320,6 @@ public class AuditTest {
 
     }
 
-	
-	
+
+
 }
