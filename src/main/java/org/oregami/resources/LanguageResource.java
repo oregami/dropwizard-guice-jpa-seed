@@ -1,7 +1,9 @@
 package org.oregami.resources;
 
 import com.google.inject.Inject;
+import io.dropwizard.auth.Auth;
 import org.apache.log4j.Logger;
+import org.oregami.dropwizard.User;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
 import org.oregami.service.LanguageService;
@@ -33,7 +35,7 @@ public class LanguageResource {
 	@Path("{id}")
 	@DELETE
 	public Response delete(
-            //@Auth User user,
+            @Auth User user,
             @PathParam("id") String id) {
 		Language l = languageDao.findOne(id);
 		if (l==null) {
@@ -88,7 +90,9 @@ public class LanguageResource {
     }
 
 	@POST
-	public Response create(Language t) {
+	public Response create(
+            @Auth User user,
+            Language t) {
 		try {
 			ServiceResult<Language> serviceResult = languageService.createNewLanguage(t);
 			if (serviceResult.hasErrors()) {
@@ -107,7 +111,9 @@ public class LanguageResource {
 
 	@PUT
 	@Path("{id}")
-	public Response update(@PathParam("id") String id, Language t) {
+	public Response update(
+            @Auth User user,
+            @PathParam("id") String id, Language t) {
 		if (t.getId()==null) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
