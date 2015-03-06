@@ -10,12 +10,13 @@ import javax.persistence.EntityTransaction;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
+import org.oregami.service.ServiceCallContext;
 
 public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 		GenericDAOUUID<E, P> {
 
 	private final Provider<EntityManager> emf;
-	
+
 	@Inject
 	public GenericDAOUUIDImpl(Provider<EntityManager> emf) {
 		this.emf=emf;
@@ -28,6 +29,9 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 	@SuppressWarnings("unchecked")
 	public P save(E entity) {
 		emf.get().persist(entity);
+        if (entity.isTopLevelEntity() && CustomRevisionListener.context.get()!=null) {
+            CustomRevisionListener.context.get().setEntityId(entity.getId());
+        }
 		return (P) entity.getId();
 	}
 
@@ -77,10 +81,14 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 		return this.emf.get().createNamedQuery(
 				getEntityClass().getSimpleName() + ".GetAll").getResultList();
 	}
-	
-	
-	public EntityTransaction getTransaction() {
-		return getEntityManager().getTransaction();
-	}
+
+
+    protected void updateRevisionListener(BaseEntityUUID entity) {
+        ServiceCallContext context = CustomRevisionListener.context.get();
+        if (context!=null) {
+            context.setEntityDiscriminator(entity.getDiscriminator());
+            context.setEntityId(entity.getId());
+        }
+    }
 
 }

@@ -1,26 +1,27 @@
 package org.oregami.service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+import org.oregami.entities.CustomRevisionEntity;
 import org.oregami.entities.CustomRevisionListener;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
 import org.oregami.validation.TaskValidator;
 
-import com.google.inject.Inject;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class TaskService {
 
 	@Inject
-	private TaskDao taskDao;
+	private TaskDao taskDao = null;
 
     public ServiceResult<Task> createNewTask(Task taskData, ServiceCallContext context) {
         TaskValidator validator = buildTaskValidator(taskData);
 
         List<ServiceError> errorMessages = validator.validateForCreation();
 
-        Task task = null;
+        Task task;
 
         if (errorMessages.size() == 0) {
             task = taskData;
@@ -28,7 +29,7 @@ public class TaskService {
             taskDao.save(task);
         }
 
-        return new ServiceResult<Task>(taskData, errorMessages);
+        return new ServiceResult<>(taskData, errorMessages);
     }
 
     public ServiceResult<Task> updateTask(Task taskData, ServiceCallContext context) {
@@ -36,15 +37,19 @@ public class TaskService {
 
         List<ServiceError> errorMessages = validator.validateForUpdate();
 
-        Task task = null;
+        Task task;
 
         if (errorMessages.size() == 0) {
             task = taskData;
+            if (context!=null) {
+                context.setEntityId(task.getId());
+                context.setEntityDiscriminator(CustomRevisionEntity.TopLevelEntity.TASK);
+            }
             CustomRevisionListener.context.set(context);
             taskDao.update(task);
         }
 
-        return new ServiceResult<Task>(taskData, errorMessages);
+        return new ServiceResult<>(taskData, errorMessages);
     }
 
     public void deleteTask(String taskId) {

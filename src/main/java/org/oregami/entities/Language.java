@@ -32,7 +32,7 @@ public class Language extends BaseEntityUUID {
 
 	public Language() {
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -60,6 +60,16 @@ public class Language extends BaseEntityUUID {
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     public LocalDateTime getChangeTimeGui() {
         return changeTime;
+    }
+
+    @Override
+    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
+        return CustomRevisionEntity.TopLevelEntity.LANGUAGE;
+    }
+
+    @Override
+    protected boolean isTopLevelEntity() {
+        return true;
     }
 
     public static final String GERMAN = "GERMAN";

@@ -25,7 +25,7 @@ public class Task extends BaseEntityUUID {
 	private String name;
 
 	private String description;
-	
+
 	private boolean finished = false;
 
     private LocalDateTime changeTime = null;
@@ -42,10 +42,10 @@ public class Task extends BaseEntityUUID {
 	public Task(String name) {
 		this.setName(name);
 	}
-	
+
 	public Task() {
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -99,5 +99,15 @@ public class Task extends BaseEntityUUID {
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     public LocalDateTime getChangeTimeGui() {
         return changeTime;
+    }
+
+    @Override
+    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
+        return CustomRevisionEntity.TopLevelEntity.TASK;
+    }
+
+    @Override
+    protected boolean isTopLevelEntity() {
+        return true;
     }
 }

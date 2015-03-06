@@ -21,6 +21,7 @@ import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.joda.time.Duration;
 import org.oregami.data.DatabaseFiller;
+import org.oregami.resources.RevisionResource;
 import org.oregami.resources.SecuredResource;
 import org.oregami.resources.TaskResource;
 import org.oregami.service.UserServiceFake;
@@ -92,6 +93,7 @@ public class ToDoApplication extends Application<ToDoConfiguration> {
 
     environment.jersey().register(guiceBundle.getInjector().getInstance(TaskResource.class));
     environment.jersey().register(createAuthProvider());
+      environment.jersey().register(guiceBundle.getInjector().getInstance(RevisionResource.class));
 
     environment.jersey().register(new SecuredResource(ToDoApplication.authKey));
 

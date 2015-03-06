@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Copyright (C) 2012  Oregami.org, Germany http://www.oregami.org
- * 
+ *
  * 	This program is free software: you can redistribute it and/or modify
  * 	it under the terms of version 3 or any later version of the
- * 	GNU Affero General Public License as published by the Free Software 
+ * 	GNU Affero General Public License as published by the Free Software
  * 	Foundation.
- * 	
+ *
  * 	This program is distributed in the hope that it will be useful,
  * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
  * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * 	GNU Affero General Public License for more details.	
- * 	
+ * 	GNU Affero General Public License for more details.
+ *
  * 	You should have received a copy of the GNU Affero General Public License
  * 	along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -74,13 +74,13 @@ public abstract class BaseEntityUUID implements Serializable
     {
         return this.id;
     }
- 
+
     @Deprecated
     public void setId(final String id)
     {
         this.id = id;
     }
- 
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -93,5 +93,13 @@ public abstract class BaseEntityUUID implements Serializable
 
     public void setValidationId(String validationId) {
         this.validationId = validationId;
+    }
+
+    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
+        return null;
+    }
+
+    protected boolean isTopLevelEntity() {
+        return false;
     }
 }

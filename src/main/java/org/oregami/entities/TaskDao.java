@@ -10,6 +10,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.joda.time.LocalDateTime;
 import org.oregami.data.RevisionInfo;
 
+import java.security.cert.CRL;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -61,6 +62,7 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
     @Override
     @Transactional
     public void update(Task entity) {
+        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         super.update(entity);
     }
@@ -68,7 +70,9 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
     @Override
     @Transactional
     public String save(Task entity) {
+        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         return super.save(entity);
     }
+
 }
