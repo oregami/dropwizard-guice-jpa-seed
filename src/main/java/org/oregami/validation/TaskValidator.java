@@ -15,21 +15,15 @@ import org.oregami.service.ServiceErrorMessage;
 
 public class TaskValidator {
 
-    private final TaskDao taskDao;
-
     private final Task task;
-    
+
     private final int nameMinLenght = 3;
 
-    public TaskValidator(TaskDao taskDao, Task task) {
-        if (taskDao == null) {
-            throw new RuntimeException("org.oregami.taskvalidator.NoTaskDaoGiven");
-        }
+    public TaskValidator(Task task) {
         if (task == null) {
             throw new RuntimeException("org.oregami.taskvalidator.NoTaskGiven");
         }
 
-        this.taskDao = taskDao;
         this.task = task;
     }
 
@@ -67,7 +61,7 @@ public class TaskValidator {
         else if (StringUtils.length(task.getName()) < nameMinLenght) {
         	errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_NAME, id), ServiceErrorMessage.TASK_TASKNAME_TOO_SHORT));
         }
-        
+
         if (StringUtils.isEmpty(task.getDescription())) {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.TASK_DESCRIPTION, id), ServiceErrorMessage.TASK_DESCRIPTION_EMPTY));
         }
@@ -78,12 +72,12 @@ public class TaskValidator {
     }
 
 	public List<ServiceError> validateForUpdate() {
-		
+
         List<ServiceError> errors = new ArrayList<ServiceError>();
 
         errors.addAll(validateRequiredFields());
 
-        errors.addAll(validateSubTasks());;
+        errors.addAll(validateSubTasks());
 
         return errors;
 	}

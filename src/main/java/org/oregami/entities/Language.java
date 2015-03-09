@@ -16,7 +16,7 @@ import java.util.Set;
 @Audited
 @NamedQueries({@NamedQuery(name="Language.GetAll", query = "from Language l")})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Language extends BaseEntityUUID {
+public class Language extends BaseEntityUUID implements TopLevelEntity {
 
     private static final long serialVersionUID = 1;
 
@@ -63,14 +63,10 @@ public class Language extends BaseEntityUUID {
     }
 
     @Override
-    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
-        return CustomRevisionEntity.TopLevelEntity.LANGUAGE;
+    public Discriminator getDiscriminator() {
+        return Discriminator.LANGUAGE;
     }
 
-    @Override
-    protected boolean isTopLevelEntity() {
-        return true;
-    }
 
     public static final String GERMAN = "GERMAN";
     public static final String MANDARIN = "MANDARIN";

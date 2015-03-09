@@ -41,10 +41,6 @@ public class TaskService {
 
         if (errorMessages.size() == 0) {
             task = taskData;
-            if (context!=null) {
-                context.setEntityId(task.getId());
-                context.setEntityDiscriminator(CustomRevisionEntity.TopLevelEntity.TASK);
-            }
             CustomRevisionListener.context.set(context);
             taskDao.update(task);
         }
@@ -62,6 +58,6 @@ public class TaskService {
     }
 
     private TaskValidator buildTaskValidator(Task newTask) {
-		return new TaskValidator(this.taskDao, newTask);
+		return new TaskValidator(newTask);
 	}
 }

@@ -53,8 +53,7 @@ public class LanguageResource {
 
 	@GET
 	public List<Language> list() {
-		List<Language> ret = null;
-		ret = languageDao.findAll();
+		List<Language> ret = languageDao.findAll();
 		return ret;
 	}
 

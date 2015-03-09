@@ -21,8 +21,8 @@ public class LanguageService {
         Language language;
 
         if (errorMessages.size() == 0) {
-            language = languageData;
             CustomRevisionListener.context.set(context);
+            language = languageData;
             languageDao.save(language);
         }
 
@@ -38,10 +38,6 @@ public class LanguageService {
 
         if (errorMessages.size() == 0) {
             language = languageData;
-            if (context!=null) {
-                context.setEntityId(language.getId());
-                context.setEntityDiscriminator(CustomRevisionEntity.TopLevelEntity.TASK);
-            }
             CustomRevisionListener.context.set(context);
             languageDao.update(language);
         }
@@ -50,6 +46,6 @@ public class LanguageService {
     }
 
 	private LanguageValidator buildTaskValidator(Language newLanguage) {
-		return new LanguageValidator(this.languageDao, newLanguage);
+		return new LanguageValidator(newLanguage);
 	}
 }

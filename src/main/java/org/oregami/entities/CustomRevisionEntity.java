@@ -13,23 +13,17 @@ import javax.persistence.Table;
 @Table
 public class CustomRevisionEntity extends DefaultTrackingModifiedEntitiesRevisionEntity {
 
-
-    public enum TopLevelEntity {
-        TASK,
-        LANGUAGE
-    }
-
     private String userId;
 
     private String entityId;
 
-    private TopLevelEntity entityDiscriminator;
+    private TopLevelEntity.Discriminator entityDiscriminator;
 
-    public TopLevelEntity getEntityDiscriminator() {
+    public TopLevelEntity.Discriminator getEntityDiscriminator() {
         return entityDiscriminator;
     }
 
-    public void setEntityDiscriminator(TopLevelEntity entityDiscriminator) {
+    public void setEntityDiscriminator(TopLevelEntity.Discriminator entityDiscriminator) {
         this.entityDiscriminator = entityDiscriminator;
     }
 

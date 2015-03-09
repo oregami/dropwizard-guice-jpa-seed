@@ -22,7 +22,7 @@ import java.util.List;
 public class TestSubTaskValidator {
 
 	static Injector injector = null;
-	
+
 	ServiceError errorDescriptionEmpty = new ServiceError(new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION), ServiceErrorMessage.SUBTASK_DESCRIPTION_EMPTY);
     ServiceError errorDescriptionTooShort = new ServiceError(new ServiceErrorContext(FieldNames.SUBTASK_DESCRIPTION), ServiceErrorMessage.SUBTASK_DESCRIPTION_TOO_SHORT);
 
@@ -49,7 +49,7 @@ public class TestSubTaskValidator {
         subTask.setDescription("This is a valid subtask description");
         t.addSubTask(subTask);
 
-        TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
+        TaskValidator validator = new TaskValidator(t);
 
         List<ServiceError> errors = validator.validateForCreation();
         System.out.println(errors.toString());
@@ -64,7 +64,7 @@ public class TestSubTaskValidator {
         SubTask subTask = new SubTask();
         t.addSubTask(subTask);
 
-        TaskValidator validator = new TaskValidator(injector.getInstance(TaskDao.class), t);
+        TaskValidator validator = new TaskValidator(t);
 
 		List<ServiceError> errors = validator.validateForCreation();
 		System.out.println(errors.toString());
@@ -73,9 +73,9 @@ public class TestSubTaskValidator {
         Assert.assertTrue(errors.size()==1);
 
 		Assert.assertTrue(errors.contains(errorDescriptionEmpty));
-		
-	}	
-	
-	
-	
+
+	}
+
+
+
 }

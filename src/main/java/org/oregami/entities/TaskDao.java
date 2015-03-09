@@ -62,7 +62,6 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
     @Override
     @Transactional
     public void update(Task entity) {
-        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         super.update(entity);
     }
@@ -70,7 +69,6 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
     @Override
     @Transactional
     public String save(Task entity) {
-        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         return super.save(entity);
     }

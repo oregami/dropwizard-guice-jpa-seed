@@ -13,12 +13,11 @@ public class CustomLocalDateTimeSerializer extends JsonSerializer<LocalDateTime>
 
 	@Override
 	public void serialize(LocalDateTime value, JsonGenerator jgen,
-			SerializerProvider provider) throws IOException,
-			JsonProcessingException {
-		
+			SerializerProvider provider) throws IOException {
+
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		jgen.writeString(fmt.format(value.toDate()));
-		
+
 	}
 
 }

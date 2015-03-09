@@ -18,7 +18,7 @@ import java.util.Set;
 @Audited
 @NamedQueries({@NamedQuery(name="Task.GetAll", query = "from Task t")})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Task extends BaseEntityUUID {
+public class Task extends BaseEntityUUID implements TopLevelEntity {
 
 	private static final long serialVersionUID = -6910022407899412272L;
 
@@ -102,12 +102,8 @@ public class Task extends BaseEntityUUID {
     }
 
     @Override
-    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
-        return CustomRevisionEntity.TopLevelEntity.TASK;
+    public Discriminator getDiscriminator() {
+        return Discriminator.TASK;
     }
 
-    @Override
-    protected boolean isTopLevelEntity() {
-        return true;
-    }
 }

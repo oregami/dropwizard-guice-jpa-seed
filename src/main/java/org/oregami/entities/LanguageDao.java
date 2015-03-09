@@ -54,7 +54,6 @@ public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
     @Override
     @Transactional
     public void update(Language entity) {
-        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         super.update(entity);
     }
@@ -62,7 +61,6 @@ public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
     @Override
     @Transactional
     public String save(Language entity) {
-        updateRevisionListener(entity);
         entity.setChangeTime(new LocalDateTime());
         return super.save(entity);
     }

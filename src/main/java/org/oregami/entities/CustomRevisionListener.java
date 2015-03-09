@@ -24,8 +24,6 @@ public class CustomRevisionListener implements RevisionListener {
             if (user != null) {
                 revEntity.setUserId(user.getUsername());
             }
-
-
             revEntity.setEntityId(context.get().getEntityId());
             revEntity.setEntityDiscriminator(context.get().getEntityDiscriminator());
             context.remove();

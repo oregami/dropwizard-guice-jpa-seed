@@ -95,11 +95,5 @@ public abstract class BaseEntityUUID implements Serializable
         this.validationId = validationId;
     }
 
-    public CustomRevisionEntity.TopLevelEntity getDiscriminator() {
-        return null;
-    }
 
-    protected boolean isTopLevelEntity() {
-        return false;
-    }
 }

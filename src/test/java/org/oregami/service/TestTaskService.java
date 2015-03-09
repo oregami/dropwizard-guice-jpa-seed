@@ -57,13 +57,15 @@ public class TestTaskService {
     @Test
     public void saveTaskWithoutError() {
         TaskService service = injector.getInstance(TaskService.class);
-        TaskDao dao = injector.getInstance(TaskDao.class);
 
         Task t = new Task("name");
         t.setDescription("this is a description");
         ServiceCallContext context = new ServiceCallContext();
         context.setUser(new User("userId-1"));
         ServiceResult<Task> result = service.createNewTask(t, context);
+
+        Assert.assertFalse(result.hasErrors());
+        Assert.assertEquals(0, result.getErrors().size());
 
         /*
         entityManager.getTransaction().commit();

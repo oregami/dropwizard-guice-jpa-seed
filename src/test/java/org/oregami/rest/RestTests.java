@@ -25,7 +25,7 @@ public class RestTests {
 
     @ClassRule
     public static final DropwizardAppRule<ToDoConfiguration> RULE =
-            new DropwizardAppRule<ToDoConfiguration>(ToDoApplication.class, "todo.yml");
+            new DropwizardAppRule<>(ToDoApplication.class, "todo.yml");
 
     private static final String URL_LOGIN = "/jwt/login";
     private static final String URL_TASK = "/task";
@@ -87,9 +87,6 @@ public class RestTests {
 
         response.then().body("[0].name", Matchers.startsWith("REST task "));
 		response.then().body("[1].name", Matchers.startsWith("REST task "));
-
-//
-//        DatabaseUtils.clearDatabaseTables();
 
 	}
 

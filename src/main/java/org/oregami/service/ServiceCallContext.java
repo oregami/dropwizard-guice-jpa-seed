@@ -2,6 +2,7 @@ package org.oregami.service;
 
 import org.oregami.dropwizard.User;
 import org.oregami.entities.CustomRevisionEntity;
+import org.oregami.entities.TopLevelEntity;
 
 /**
  * Created by sebastian on 04.03.15.
@@ -20,13 +21,13 @@ public class ServiceCallContext {
 
     private String entityId;
 
-    private CustomRevisionEntity.TopLevelEntity entityDiscriminator;
+    private TopLevelEntity.Discriminator entityDiscriminator;
 
-    public CustomRevisionEntity.TopLevelEntity getEntityDiscriminator() {
+    public TopLevelEntity.Discriminator getEntityDiscriminator() {
         return entityDiscriminator;
     }
 
-    public void setEntityDiscriminator(CustomRevisionEntity.TopLevelEntity entityDiscriminator) {
+    public void setEntityDiscriminator(TopLevelEntity.Discriminator entityDiscriminator) {
         this.entityDiscriminator = entityDiscriminator;
     }
 
