@@ -13,22 +13,17 @@ import java.util.List;
 
 public class LanguageValidator {
 
-    private final LanguageDao languageDao;
 
     private final Language language;
 
     private final int nameMinLenght = 3;
     private final int descriptionMinLenght = 10;
 
-    public LanguageValidator(LanguageDao dao, Language l) {
-        if (dao == null) {
-            throw new RuntimeException("org.oregami.taskvalidator.NoLanguageDaoGiven");
-        }
+    public LanguageValidator(Language l) {
         if (l == null) {
             throw new RuntimeException("org.oregami.taskvalidator.NoLanguageGiven");
         }
 
-        this.languageDao = dao;
         this.language = l;
     }
 
@@ -68,7 +63,7 @@ public class LanguageValidator {
     }
 
 	public List<ServiceError> validateForUpdate() {
-		
+
         List<ServiceError> errors = new ArrayList<ServiceError>();
 
         errors.addAll(validateRequiredFields());
