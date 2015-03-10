@@ -104,7 +104,7 @@ public class ToDoApplication extends Application<ToDoConfiguration> {
     final HmacSHA512Verifier tokenVerifier = new HmacSHA512Verifier(ToDoApplication.authKey);
     final JsonWebTokenValidator expiryValidator = new ExpiryValidator(Duration.standardSeconds(1));
 
-    JWTAuthProvider<User> authProvider = new JWTAuthProvider<User>(new Authenticator<JsonWebToken, User>() {
+    JWTAuthProvider<User> authProvider = new JWTAuthProvider<>(new Authenticator<JsonWebToken, User>() {
       @Override
       public Optional<User> authenticate(JsonWebToken token) throws AuthenticationException {
         //check if token has expired:

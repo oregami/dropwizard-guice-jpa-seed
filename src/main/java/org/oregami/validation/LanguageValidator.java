@@ -27,7 +27,7 @@ public class LanguageValidator {
     }
 
     public List<ServiceError> validateForCreation() {
-        List<ServiceError> errors = new ArrayList<ServiceError>();
+        List<ServiceError> errors = new ArrayList<>();
 
         errors.addAll(validateRequiredFields());
 
@@ -36,7 +36,7 @@ public class LanguageValidator {
     }
 
     public List<ServiceError> validateRequiredFields() {
-        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+        List<ServiceError> errorMessages = new ArrayList<>();
         String id = language.getId();
         if (id==null) {
             id = language.getValidationId();
@@ -63,7 +63,7 @@ public class LanguageValidator {
 
 	public List<ServiceError> validateForUpdate() {
 
-        List<ServiceError> errors = new ArrayList<ServiceError>();
+        List<ServiceError> errors = new ArrayList<>();
 
         errors.addAll(validateRequiredFields());
 

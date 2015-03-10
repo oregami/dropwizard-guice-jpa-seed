@@ -24,7 +24,7 @@ public class SubTaskValidator {
     }
 
     public List<ServiceError> validateForCreation() {
-        List<ServiceError> errors = new ArrayList<ServiceError>();
+        List<ServiceError> errors = new ArrayList<>();
 
         errors.addAll(validateRequiredFields());
 
@@ -33,7 +33,7 @@ public class SubTaskValidator {
     }
 
     public List<ServiceError> validateRequiredFields() {
-        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+        List<ServiceError> errorMessages = new ArrayList<>();
 
         String id = subTask.getId();
         if (id==null) {

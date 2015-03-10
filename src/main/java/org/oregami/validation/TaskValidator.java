@@ -27,7 +27,7 @@ public class TaskValidator {
     }
 
     public List<ServiceError> validateForCreation() {
-        List<ServiceError> errors = new ArrayList<ServiceError>();
+        List<ServiceError> errors = new ArrayList<>();
 
         errors.addAll(validateRequiredFields());
 
@@ -38,7 +38,7 @@ public class TaskValidator {
     }
 
     private List<ServiceError> validateSubTasks() {
-        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+        List<ServiceError> errorMessages = new ArrayList<>();
         Set<SubTask> subTasks = task.getSubTasks();
         for (SubTask subTask: subTasks ) {
             SubTaskValidator subTaskValidator = new SubTaskValidator(subTask);
@@ -49,7 +49,7 @@ public class TaskValidator {
 
 
     public List<ServiceError> validateRequiredFields() {
-        List<ServiceError> errorMessages = new ArrayList<ServiceError>();
+        List<ServiceError> errorMessages = new ArrayList<>();
         String id = task.getId();
         if (id==null) {
             id = task.getValidationId();
@@ -72,7 +72,7 @@ public class TaskValidator {
 
 	public List<ServiceError> validateForUpdate() {
 
-        List<ServiceError> errors = new ArrayList<ServiceError>();
+        List<ServiceError> errors = new ArrayList<>();
 
         errors.addAll(validateRequiredFields());
 

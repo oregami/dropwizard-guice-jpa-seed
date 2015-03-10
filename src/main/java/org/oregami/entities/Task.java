@@ -32,7 +32,7 @@ public class Task extends BaseEntityUUID implements TopLevelEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
     @JoinColumn
-    private final Set<SubTask> subTasks = new HashSet<SubTask>();
+    private final Set<SubTask> subTasks = new HashSet<>();
 
     @OneToOne
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)

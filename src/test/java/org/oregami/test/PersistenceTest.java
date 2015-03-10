@@ -184,7 +184,7 @@ public class PersistenceTest {
         Assert.assertEquals(2, taskLoaded.getSubTasks().size());
         Assert.assertNotNull(taskLoaded.getLanguage());
 
-        List<String> sidList = new ArrayList<String>();
+        List<String> sidList = new ArrayList<>();
         sidList.add(sid1);
         sidList.add(sid2);
 
