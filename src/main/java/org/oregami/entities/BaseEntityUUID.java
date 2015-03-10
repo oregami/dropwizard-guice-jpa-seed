@@ -62,7 +62,7 @@ public abstract class BaseEntityUUID implements Serializable
         final BaseEntityUUID other = (BaseEntityUUID) obj;
         if (this.id != null && other.id != null)
         {
-            if (this.getClass().equals(other.getClass()) && this.id == other.id)
+            if (this.getClass().equals(other.getClass()) && this.id.equals(other.id))
             {
                 return true;
             }
