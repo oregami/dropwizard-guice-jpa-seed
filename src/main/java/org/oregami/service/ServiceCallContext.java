@@ -1,7 +1,6 @@
 package org.oregami.service;
 
 import org.oregami.dropwizard.User;
-import org.oregami.entities.CustomRevisionEntity;
 import org.oregami.entities.TopLevelEntity;
 
 /**

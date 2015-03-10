@@ -7,15 +7,11 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 import org.junit.*;
 import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.dropwizard.User;
-import org.oregami.entities.Language;
-import org.oregami.entities.LanguageDao;
 import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
 import org.oregami.test.DatabaseUtils;
 import org.oregami.test.PersistenceTest;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 /**
  * Created by sebastian on 25.08.14.

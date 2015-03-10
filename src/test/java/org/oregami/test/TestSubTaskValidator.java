@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.SubTask;
 import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;

@@ -2,7 +2,6 @@ package org.oregami.validation;
 
 import org.apache.commons.lang.StringUtils;
 import org.oregami.entities.Language;
-import org.oregami.entities.LanguageDao;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;

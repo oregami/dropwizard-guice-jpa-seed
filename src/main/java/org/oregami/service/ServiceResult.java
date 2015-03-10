@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.ToString;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.oregami.entities.BaseEntityUUID;
 
 /**
- * 
+ *
  * @param <T>
  */
 @ToString
@@ -59,7 +57,7 @@ public class ServiceResult<T extends BaseEntityUUID> {
     public void addMessage(ServiceErrorContext context, ServiceErrorMessage message) {
         errors.add(new ServiceError(context, message));
     }
-    
+
     public boolean containsError(ServiceError searchError) {
     	for (ServiceError error : errors) {
 			if (error.equals(searchError)) {
@@ -67,6 +65,6 @@ public class ServiceResult<T extends BaseEntityUUID> {
 			}
 		}
     	return false;
-    }    
+    }
 
 }

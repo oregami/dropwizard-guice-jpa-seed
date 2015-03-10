@@ -9,15 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.Language;
-import org.oregami.entities.LanguageDao;
-import org.oregami.entities.Task;
-import org.oregami.entities.TaskDao;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;
 import org.oregami.service.ServiceErrorMessage;
 import org.oregami.validation.LanguageValidator;
-import org.oregami.validation.TaskValidator;
 
 import java.util.List;
 

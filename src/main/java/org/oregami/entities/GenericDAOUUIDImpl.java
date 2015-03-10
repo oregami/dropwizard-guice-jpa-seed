@@ -5,7 +5,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

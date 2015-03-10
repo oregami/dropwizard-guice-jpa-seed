@@ -1,8 +1,6 @@
 package org.oregami.service;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
-import org.oregami.entities.CustomRevisionEntity;
 import org.oregami.entities.CustomRevisionListener;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;

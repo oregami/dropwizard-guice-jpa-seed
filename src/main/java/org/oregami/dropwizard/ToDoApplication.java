@@ -24,7 +24,6 @@ import org.oregami.data.DatabaseFiller;
 import org.oregami.resources.RevisionResource;
 import org.oregami.resources.SecuredResource;
 import org.oregami.resources.TaskResource;
-import org.oregami.service.UserServiceFake;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;

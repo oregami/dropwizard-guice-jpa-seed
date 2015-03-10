@@ -1,10 +1,8 @@
 package org.oregami.service;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import org.oregami.entities.*;
 import org.oregami.validation.LanguageValidator;
-import org.oregami.validation.TaskValidator;
 
 import java.util.List;
 

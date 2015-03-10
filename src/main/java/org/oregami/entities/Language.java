@@ -9,8 +9,6 @@ import org.joda.time.LocalDateTime;
 import org.oregami.data.CustomLocalDateTimeSerializer;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Audited

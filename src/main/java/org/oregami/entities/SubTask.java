@@ -3,8 +3,6 @@ package org.oregami.entities;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.PreUpdate;
 
 @Entity
 @Audited
