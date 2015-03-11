@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.path.json.JsonPath;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 
 import org.hamcrest.Matchers;
@@ -29,6 +30,7 @@ public class RestTests {
 
     private static final String URL_LOGIN = "/jwt/login";
     private static final String URL_TASK = "/task";
+    private static final String URL_REVISIONS = "/revisions";
 
     private static Injector injector;
 
@@ -88,7 +90,21 @@ public class RestTests {
         response.then().body("[0].name", Matchers.startsWith("REST task "));
 		response.then().body("[1].name", Matchers.startsWith("REST task "));
 
-	}
+        //Check if 2 revisions with userId and for Tasks are in the database
+        RevisionEntityDao revDao = injector.getInstance(RevisionEntityDao.class);
+        List<CustomRevisionEntity> allRevs = revDao.findAll();
+
+        int revisionEntitiesWithUser = 0;
+        for (CustomRevisionEntity rev: allRevs) {
+            if (rev.getUserId()!=null) {
+                revisionEntitiesWithUser++;
+                Assert.assertNotNull(rev.getEntityId());
+                Assert.assertEquals(rev.getEntityDiscriminator(), TopLevelEntity.Discriminator.TASK);
+            }
+        }
+        Assert.assertEquals(2, revisionEntitiesWithUser);
+
+    }
 
   @Test
   public void authenticateSuccess() {

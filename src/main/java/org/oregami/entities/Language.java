@@ -11,10 +11,11 @@ import org.oregami.data.CustomLocalDateTimeSerializer;
 import javax.persistence.*;
 
 @Entity
+@TopLevelEntity(discriminator = TopLevelEntity.Discriminator.LANGUAGE)
 @Audited
 @NamedQueries({@NamedQuery(name="Language.GetAll", query = "from Language l")})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Language extends BaseEntityUUID implements TopLevelEntity {
+public class Language extends BaseEntityUUID {
 
     private static final long serialVersionUID = 1;
 
@@ -58,11 +59,6 @@ public class Language extends BaseEntityUUID implements TopLevelEntity {
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     public LocalDateTime getChangeTimeGui() {
         return changeTime;
-    }
-
-    @Override
-    public Discriminator getDiscriminator() {
-        return Discriminator.LANGUAGE;
     }
 
 

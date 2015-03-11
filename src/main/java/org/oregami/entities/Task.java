@@ -15,10 +15,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@TopLevelEntity(discriminator = TopLevelEntity.Discriminator.TASK)
 @Audited
 @NamedQueries({@NamedQuery(name="Task.GetAll", query = "from Task t")})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Task extends BaseEntityUUID implements TopLevelEntity {
+public class Task extends BaseEntityUUID {
 
 	private static final long serialVersionUID = -6910022407899412272L;
 
@@ -99,11 +100,6 @@ public class Task extends BaseEntityUUID implements TopLevelEntity {
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     public LocalDateTime getChangeTimeGui() {
         return changeTime;
-    }
-
-    @Override
-    public Discriminator getDiscriminator() {
-        return Discriminator.TASK;
     }
 
 }

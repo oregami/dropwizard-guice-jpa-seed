@@ -28,9 +28,7 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 	@SuppressWarnings("unchecked")
 	public P save(E entity) {
 		emf.get().persist(entity);
-        if (entity instanceof TopLevelEntity && CustomRevisionListener.context.get()!=null) {
-            updateRevisionListener(entity);
-        }
+        updateRevisionListener(entity);
 		return (P) entity.getId();
 	}
 
@@ -42,9 +40,7 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 	@Override
 	@Transactional
 	public void update(E entity) {
-        if (entity instanceof TopLevelEntity && CustomRevisionListener.context.get()!=null) {
-            updateRevisionListener(entity);
-        }
+        updateRevisionListener(entity);
 		emf.get().merge(entity);
 	}
 
@@ -86,11 +82,10 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
 
 
     protected void updateRevisionListener(BaseEntityUUID entity) {
-        if (entity instanceof TopLevelEntity) {
-            TopLevelEntity tle = (TopLevelEntity) entity;
+        if (entity.getClass().isAnnotationPresent(TopLevelEntity.class)) {
             ServiceCallContext context = CustomRevisionListener.context.get();
             if (context != null) {
-                context.setEntityDiscriminator(tle.getDiscriminator());
+                context.setEntityDiscriminator(entity.getClass().getAnnotation(TopLevelEntity.class).discriminator());
                 context.setEntityId(entity.getId());
             }
         }
