@@ -1,9 +1,5 @@
 package org.oregami.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.oregami.entities.SubTask;
 import org.oregami.entities.Task;
@@ -12,7 +8,11 @@ import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;
 import org.oregami.service.ServiceErrorMessage;
 
-public class TaskValidator {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class TaskValidator implements IEntityValidator {
 
     private final Task task;
 
@@ -22,19 +22,15 @@ public class TaskValidator {
         if (task == null) {
             throw new RuntimeException("org.oregami.taskvalidator.NoTaskGiven");
         }
-
         this.task = task;
     }
 
+    @Override
     public List<ServiceError> validateForCreation() {
         List<ServiceError> errors = new ArrayList<>();
-
         errors.addAll(validateRequiredFields());
-
         errors.addAll(validateSubTasks());
-
         return errors;
-
     }
 
     private List<ServiceError> validateSubTasks() {
@@ -47,7 +43,7 @@ public class TaskValidator {
         return errorMessages;
     }
 
-
+    @Override
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<>();
         String id = task.getId();
@@ -70,12 +66,11 @@ public class TaskValidator {
         return errorMessages;
     }
 
+    @Override
 	public List<ServiceError> validateForUpdate() {
 
         List<ServiceError> errors = new ArrayList<>();
-
         errors.addAll(validateRequiredFields());
-
         errors.addAll(validateSubTasks());
 
         return errors;

@@ -56,7 +56,7 @@ public class TestLanguageService {
         LanguageDao dao = injector.getInstance(LanguageDao.class);
 
         Language l = new Language("english");
-        ServiceResult<Language> result = service.createNewLanguage(l, null);
+        ServiceResult<Language> result = service.createNewEntity(l, null);
 
         Assert.assertTrue(result.hasErrors());
         Assert.assertEquals(1, result.getErrors().size());
@@ -72,7 +72,7 @@ public class TestLanguageService {
 
         Language l = new Language();
         l.setDescription("this is a description");
-        ServiceResult<Language> result = service.createNewLanguage(l, null);
+        ServiceResult<Language> result = service.createNewEntity(l, null);
 
         Assert.assertTrue(result.hasErrors());
         Assert.assertEquals(1, result.getErrors().size());
@@ -80,7 +80,7 @@ public class TestLanguageService {
         Assert.assertEquals(0, dao.findAll().size());
 
         l.setName("a name");
-        ServiceResult<Language> result2 = service.createNewLanguage(l, null);
+        ServiceResult<Language> result2 = service.createNewEntity(l, null);
 
         Assert.assertFalse(result2.hasErrors());
 
@@ -94,14 +94,14 @@ public class TestLanguageService {
 
         Language l = new Language("name");
         l.setDescription("this is a description");
-        ServiceResult<Language> result = service.createNewLanguage(l, null);
+        ServiceResult<Language> result = service.createNewEntity(l, null);
 
         Assert.assertFalse(result.hasErrors());
         Assert.assertEquals(0, result.getErrors().size());
         Assert.assertEquals(1, dao.findAll().size());
 
         l.setDescription("aa");
-        ServiceResult<Language> updateResult = service.updateLanguage(l, null);
+        ServiceResult<Language> updateResult = service.updateEntity(l, null);
         Assert.assertTrue(updateResult.hasErrors());
         Assert.assertEquals(1, updateResult.getErrors().size());
         errorDescriptionTooShort.getContext().setId(l.getId());

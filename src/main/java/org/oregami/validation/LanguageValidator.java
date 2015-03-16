@@ -10,7 +10,7 @@ import org.oregami.service.ServiceErrorMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LanguageValidator {
+public class LanguageValidator implements IEntityValidator {
 
 
     private final Language language;
@@ -22,19 +22,18 @@ public class LanguageValidator {
         if (l == null) {
             throw new RuntimeException("org.oregami.taskvalidator.NoLanguageGiven");
         }
-
         this.language = l;
     }
 
+    @Override
     public List<ServiceError> validateForCreation() {
         List<ServiceError> errors = new ArrayList<>();
-
         errors.addAll(validateRequiredFields());
-
         return errors;
 
     }
 
+    @Override
     public List<ServiceError> validateRequiredFields() {
         List<ServiceError> errorMessages = new ArrayList<>();
         String id = language.getId();
@@ -48,7 +47,6 @@ public class LanguageValidator {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME, id), ServiceErrorMessage.LANGUAGE_NAME_TOO_SHORT));
         }
 
-
         if (StringUtils.isEmpty(language.getDescription())) {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION, id), ServiceErrorMessage.LANGUAGE_DESCRIPTION_EMPTY));
         }
@@ -56,17 +54,13 @@ public class LanguageValidator {
             errorMessages.add(new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION, id), ServiceErrorMessage.LANGUAGE_DESCRIPTION_TOO_SHORT));
         }
 
-
-
         return errorMessages;
     }
 
+    @Override
 	public List<ServiceError> validateForUpdate() {
-
         List<ServiceError> errors = new ArrayList<>();
-
         errors.addAll(validateRequiredFields());
-
         return errors;
 	}
 }

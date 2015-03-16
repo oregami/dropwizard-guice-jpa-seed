@@ -51,14 +51,14 @@ public class DatabaseFiller {
         LanguageService languageService = injector.getInstance(LanguageService.class);
         Language english = new Language("english");
         english.setDescription("This is the english language");
-        ServiceResult<Language> languageServiceResult = languageService.createNewLanguage(english, null);
+        ServiceResult<Language> languageServiceResult = languageService.createNewEntity(english, null);
         if (languageServiceResult.hasErrors()) {
             throw new RuntimeException(languageServiceResult.getErrors().toString());
         }
 
         Language german = new Language("german");
         german.setDescription("This is the german language");
-        languageServiceResult = languageService.createNewLanguage(german, null);
+        languageServiceResult = languageService.createNewEntity(german, null);
         if (languageServiceResult.hasErrors()) {
             throw new RuntimeException(languageServiceResult.getErrors().toString());
         }
@@ -75,7 +75,7 @@ public class DatabaseFiller {
         sub1.setDescription("this a subtask 1");
         t1.addSubTask(sub1);
 
-        ServiceResult<Task> taskServiceResult = taskService.createNewTask(t1, null);
+        ServiceResult<Task> taskServiceResult = taskService.createNewEntity(t1, null);
         if (taskServiceResult.hasErrors()) {
             throw new RuntimeException(taskServiceResult.getErrors().toString());
         }
@@ -83,7 +83,7 @@ public class DatabaseFiller {
         Task t2 = new Task("task 2");
         t2.setDescription("This is task 2");
         t2.setLanguage(languageDao.findByExactName("english"));
-        taskServiceResult = taskService.createNewTask(t2, null);
+        taskServiceResult = taskService.createNewEntity(t2, null);
         if (taskServiceResult.hasErrors()) {
             throw new RuntimeException(taskServiceResult.getErrors().toString());
         }

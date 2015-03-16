@@ -96,7 +96,7 @@ public class LanguageResource {
             Language t) {
 		try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Language> serviceResult = languageService.createNewLanguage(t, context);
+            ServiceResult<Language> serviceResult = languageService.createNewEntity(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
@@ -121,7 +121,7 @@ public class LanguageResource {
 		}
 		try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Language> serviceResult = languageService.updateLanguage(t, context);
+            ServiceResult<Language> serviceResult = languageService.updateEntity(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")

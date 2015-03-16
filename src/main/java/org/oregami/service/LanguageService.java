@@ -2,48 +2,24 @@ package org.oregami.service;
 
 import com.google.inject.Inject;
 import org.oregami.entities.*;
+import org.oregami.validation.IEntityValidator;
 import org.oregami.validation.LanguageValidator;
+import org.oregami.validation.TaskValidator;
 
 import java.util.List;
 
-public class LanguageService {
+public class LanguageService extends TopLevelEntityService<Language> {
 
-	@Inject
-	private LanguageDao languageDao = null;
+    @Inject
+    LanguageDao dao;
 
-    public ServiceResult<Language> createNewLanguage(Language languageData, ServiceCallContext context) {
-        LanguageValidator validator = buildTaskValidator(languageData);
-
-        List<ServiceError> errorMessages = validator.validateForCreation();
-
-        Language language;
-
-        if (errorMessages.size() == 0) {
-            CustomRevisionListener.context.set(context);
-            language = languageData;
-            languageDao.save(language);
-        }
-
-        return new ServiceResult<>(languageData, errorMessages);
+    @Override
+    public GenericDAOUUID<Language, String> getDao() {
+        return dao;
     }
 
-    public ServiceResult<Language> updateLanguage(Language languageData, ServiceCallContext context) {
-        LanguageValidator validator = buildTaskValidator(languageData);
-
-        List<ServiceError> errorMessages = validator.validateForUpdate();
-
-        Language language;
-
-        if (errorMessages.size() == 0) {
-            language = languageData;
-            CustomRevisionListener.context.set(context);
-            languageDao.update(language);
-        }
-
-        return new ServiceResult<>(languageData, errorMessages);
+    @Override
+    public IEntityValidator buildEntityValidator(Language entity) {
+        return new LanguageValidator(entity);
     }
-
-	private LanguageValidator buildTaskValidator(Language newLanguage) {
-		return new LanguageValidator(newLanguage);
-	}
 }

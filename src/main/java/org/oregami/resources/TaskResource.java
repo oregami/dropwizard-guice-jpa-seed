@@ -1,24 +1,7 @@
 package org.oregami.resources;
 
+import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
-
-import java.net.URI;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import javax.persistence.OptimisticLockException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import org.apache.log4j.Logger;
 import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.User;
@@ -28,7 +11,14 @@ import org.oregami.service.ServiceCallContext;
 import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
 
-import com.google.inject.Inject;
+import javax.persistence.OptimisticLockException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.net.URI;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Path("/task")
@@ -91,7 +81,7 @@ public class TaskResource {
             Task t) {
 		try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = taskService.createNewTask(t, context);
+            ServiceResult<Task> serviceResult = taskService.createNewEntity(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
@@ -116,7 +106,7 @@ public class TaskResource {
 		}
 		try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = taskService.updateTask(t, context);
+            ServiceResult<Task> serviceResult = taskService.updateEntity(t, context);
 			if (serviceResult.hasErrors()) {
 				return Response.status(Status.BAD_REQUEST)
 						.type("text/json")
@@ -136,7 +126,7 @@ public class TaskResource {
 			@Auth User user,
             @PathParam("id") String id) {
         try {
-            taskService.deleteTask(id);
+            taskService.deleteEntity(id);
         } catch (NoSuchElementException e) {
             return Response.status(Status.NOT_FOUND).build();
         }

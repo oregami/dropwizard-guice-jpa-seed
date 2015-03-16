@@ -58,7 +58,7 @@ public class TestTaskService {
         t.setDescription("this is a description");
         ServiceCallContext context = new ServiceCallContext();
         context.setUser(new User("userId-1"));
-        ServiceResult<Task> result = service.createNewTask(t, context);
+        ServiceResult<Task> result = service.createNewEntity(t, context);
 
         Assert.assertFalse(result.hasErrors());
         Assert.assertEquals(0, result.getErrors().size());
