@@ -27,36 +27,6 @@ public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
     }
 
 
-    public List<RevisionInfo> findRevisions(String id) {
-
-        List<RevisionInfo> list = new ArrayList<>();
-
-        AuditReader reader = AuditReaderFactory.get(getEntityManager());
-
-        List<Number> revisions = reader.getRevisions(Task.class, id);
-
-        for (Number n : revisions) {
-            CustomRevisionEntity revEntity = reader.findRevision(CustomRevisionEntity.class, n);
-            list.add(new RevisionInfo(n, revEntity));
-        }
-
-        return list;
-
-    }
-
-    public Task findRevision(String id, Number revision) {
-
-        AuditReader reader = AuditReaderFactory.get(getEntityManager());
-
-        List<Number> revisions = reader.getRevisions(Task.class, id);
-        if (!revisions.contains(revision)) {
-            return null;
-        }
-        Task tRev = reader.find(Task.class, id, revision);
-        return tRev;
-
-    }
-
     @Override
     @Transactional
     public void update(Task entity) {
