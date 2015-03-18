@@ -96,10 +96,9 @@ public abstract class GenericDAOUUIDImpl<E extends BaseEntityUUID, P> implements
     }
 
     public List<RevisionInfo> findRevisions(String id) {
-
         List<RevisionInfo> list = new ArrayList<>();
         AuditReader reader = AuditReaderFactory.get(getEntityManager());
-        List<Number> revisions = reader.getRevisions(Task.class, id);
+        List<Number> revisions = reader.getRevisions(getEntityClass(), id);
         for (Number n : revisions) {
             CustomRevisionEntity revEntity = reader.findRevision(CustomRevisionEntity.class, n);
             list.add(new RevisionInfo(n, revEntity));
