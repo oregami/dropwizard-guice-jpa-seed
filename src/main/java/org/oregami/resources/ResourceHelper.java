@@ -22,7 +22,7 @@ public abstract class ResourceHelper {
     public static Response create(User user, BaseEntityUUID entity, TopLevelEntityService service) {
         try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = service.createNewEntity(entity, context);
+            ServiceResult<BaseEntityUUID> serviceResult = service.createNewEntity(entity, context);
             if (serviceResult.hasErrors()) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .type("text/json")
@@ -41,7 +41,7 @@ public abstract class ResourceHelper {
         }
         try {
             ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = service.updateEntity(entity, context);
+            ServiceResult<BaseEntityUUID> serviceResult = service.updateEntity(entity, context);
             if (serviceResult.hasErrors()) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .type("text/json")
