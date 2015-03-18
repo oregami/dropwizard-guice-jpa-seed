@@ -2,23 +2,15 @@ package org.oregami.resources;
 
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
-import org.apache.log4j.Logger;
-import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.User;
 import org.oregami.entities.Task;
 import org.oregami.entities.TaskDao;
-import org.oregami.service.ServiceCallContext;
-import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
 
-import javax.persistence.OptimisticLockException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Path("/task")
@@ -27,110 +19,53 @@ import java.util.NoSuchElementException;
 public class TaskResource {
 
 	@Inject
-	private TaskDao taskDao = null;
+	private TaskDao dao = null;
 
 	@Inject
-	private TaskService taskService = null;
+	private TaskService service = null;
 
-	public TaskResource() {
-	}
-
+	public TaskResource() {}
 
 	@GET
 	public List<Task> list() {
-		List<Task> ret = taskDao.findAll();
+		List<Task> ret = dao.findAll();
 		return ret;
 	}
 
     @GET
     @Path("/{id}")
-	public Response getTask(@PathParam("id") String id) {
-    	Task task = taskDao.findOne(id);
-    	if (task!=null) {
-    		return Response.ok(task).build();
-    	} else {
-    		return Response.status(Response.Status.NOT_FOUND).build();
-    	}
+	public Response get(@PathParam("id") String id) {
+        return ResourceHelper.get(id, dao);
 	}
 
     @GET
     @Path("/{id}/revisions")
-    public Response getTaskRevisions(@PathParam("id") String id) {
-        List<RevisionInfo> revisionList = taskDao.findRevisions(id);
-        if (revisionList!=null) {
-            return Response.ok(revisionList).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response getRevisions(@PathParam("id") String id) {
+        return ResourceHelper.getRevisions(id, dao);
     }
 
     @GET
     @Path("/{id}/revisions/{revision}")
-    public Response getTaskRevision(@PathParam("id") String id, @PathParam("revision") String revision) {
-        Task t = taskDao.findRevision(id, Integer.parseInt(revision));
-        if (t!=null) {
-            return Response.ok(t).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response getRevision(@PathParam("id") String id, @PathParam("revision") String revision) {
+        return ResourceHelper.getRevision(id, revision, dao);
     }
 
 	@POST
-	public Response create(
-            @Auth User user,
-            Task t) {
-		try {
-            ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = taskService.createNewEntity(t, context);
-			if (serviceResult.hasErrors()) {
-				return Response.status(Status.BAD_REQUEST)
-						.type("text/json")
-		                .entity(serviceResult.getErrors()).build();
-			}
-			return Response.created(new URI(serviceResult.getResult().getId())).build();
-		} catch (Exception e) {
-			return Response.status(Status.CONFLICT).type("text/plain")
-	                .entity(e.getMessage()).build();
-		}
-
+	public Response create(@Auth User user, Task t) {
+		return ResourceHelper.create(user, t, service);
 	}
 
 
 	@PUT
 	@Path("{id}")
-	public Response update(
-            @Auth User user,
-            @PathParam("id") String id, Task t) {
-		if (t.getId()==null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-		try {
-            ServiceCallContext context = new ServiceCallContext(user);
-            ServiceResult<Task> serviceResult = taskService.updateEntity(t, context);
-			if (serviceResult.hasErrors()) {
-				return Response.status(Status.BAD_REQUEST)
-						.type("text/json")
-		                .entity(serviceResult.getErrors()).build();
-			}
-		} catch (OptimisticLockException e) {
-			Logger.getLogger(this.getClass()).warn("OptimisticLockException", e);
-			return Response.status(Response.Status.BAD_REQUEST).tag("OptimisticLockException").build();
-		}
-		return Response.status(Response.Status.ACCEPTED).entity(t).build();
+	public Response update(@Auth User user, @PathParam("id") String id, Task t) {
+		return ResourceHelper.update(user, id, t, service);
 	}
 
 
     @DELETE
     @Path("{id}")
-    public Response delete(
-			@Auth User user,
-            @PathParam("id") String id) {
-        try {
-            taskService.deleteEntity(id);
-        } catch (NoSuchElementException e) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-        return Response.ok().build();
-
+    public Response delete(@Auth User user, @PathParam("id") String id) {
+        return ResourceHelper.delete(user, id, service);
     }
 }
