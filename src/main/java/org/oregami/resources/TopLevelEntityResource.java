@@ -1,6 +1,5 @@
 package org.oregami.resources;
 
-import io.dropwizard.auth.Auth;
 import org.apache.log4j.Logger;
 import org.oregami.dropwizard.User;
 import org.oregami.entities.BaseEntityUUID;
@@ -10,8 +9,6 @@ import org.oregami.service.ServiceResult;
 import org.oregami.service.TopLevelEntityService;
 
 import javax.persistence.OptimisticLockException;
-import javax.ws.rs.POST;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 

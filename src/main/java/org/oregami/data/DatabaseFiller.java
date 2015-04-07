@@ -1,13 +1,8 @@
 package org.oregami.data;
 
 import org.apache.log4j.Logger;
-import org.oregami.dropwizard.ToDoApplication;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
 import org.oregami.entities.SubTask;

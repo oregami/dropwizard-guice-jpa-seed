@@ -1,6 +1,5 @@
 package org.oregami.rest;
 
-import com.google.inject.Injector;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Header;

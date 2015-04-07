@@ -5,18 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.junit.*;
 import org.oregami.data.DatabaseFiller;
 import org.oregami.data.RevisionInfo;
-import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.*;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import org.oregami.util.StartHelper;
 
 public class PersistenceTest {

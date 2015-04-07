@@ -5,7 +5,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.Task;
 import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
@@ -13,13 +12,6 @@ import org.oregami.service.ServiceErrorContext;
 import org.oregami.service.ServiceErrorMessage;
 import org.oregami.util.StartHelper;
 import org.oregami.validation.TaskValidator;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
-
-import javax.persistence.EntityManager;
 
 public class TestTaskValidator {
 

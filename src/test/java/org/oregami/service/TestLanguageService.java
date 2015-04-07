@@ -1,14 +1,8 @@
 package org.oregami.service;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import org.junit.*;
-import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
-import org.oregami.test.PersistenceTest;
 import org.oregami.util.StartHelper;
 
 import javax.persistence.EntityManager;

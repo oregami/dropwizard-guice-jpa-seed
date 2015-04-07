@@ -5,12 +5,7 @@ import javax.persistence.EntityManager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 import org.joda.time.LocalDateTime;
-import org.oregami.data.RevisionInfo;
-
-import java.util.*;
 
 public class TaskDao extends GenericDAOUUIDImpl<Task, String>{
 

@@ -1,6 +1,5 @@
 package org.oregami.service;
 
-import com.google.inject.Injector;
 import org.junit.*;
 import org.oregami.data.DatabaseFiller;
 import org.oregami.dropwizard.User;

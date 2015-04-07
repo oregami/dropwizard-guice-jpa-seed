@@ -3,14 +3,9 @@ package org.oregami.entities;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 import org.joda.time.LocalDateTime;
-import org.oregami.data.RevisionInfo;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LanguageDao extends GenericDAOUUIDImpl<Language, String>{
 
