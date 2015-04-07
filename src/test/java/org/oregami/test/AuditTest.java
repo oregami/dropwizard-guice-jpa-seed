@@ -213,6 +213,9 @@ public class AuditTest {
         de.setDescription("description de1");
         languageDao.save(de);
         List<Language> allLanguages = languageDao.findAll();
+        for (Language l : allLanguages) {
+            System.out.println("language: " + l);
+        }
         Assert.assertFalse(allLanguages.isEmpty());
         Assert.assertEquals(2, allLanguages.size());
         entityManager.getTransaction().commit();

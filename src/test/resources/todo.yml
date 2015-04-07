@@ -5,7 +5,7 @@ server:
   adminConnectors:
     - type: http
       port: 8181
-      
+
 # Logging settings.
 logging:
 
@@ -18,9 +18,9 @@ logging:
     # Sets the level for 'com.example.app' to DEBUG.
     com.example.app: DEBUG
 
-    org.hibernate.SQL: ALL
+    #org.hibernate.SQL: ALL
 
-    com.github.toastshaman: DEBUG
+    #com.github.toastshaman: DEBUG
 
   appenders:
     - type: console
