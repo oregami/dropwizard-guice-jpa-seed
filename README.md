@@ -8,6 +8,7 @@ This a sample REST application written in Java. It's purpose is to create a gene
 - dependency injection with [Google Guice](https://code.google.com/p/google-guice/) (no Spring dependencies!)
 - [Hibernate](http://hibernate.org/) / JPA 2.1 as database access framework
 - [HSQLDB](http://hsqldb.org/) as database
+- read database configuration from Dropwizard yaml config file, persistence.xml is not used
 - "Session-per-HTTP-request" with Guice [PersistentFilter](https://code.google.com/p/google-guice/wiki/JPA)
 - suport for [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 - JPA entities with [UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier) as primary keys
