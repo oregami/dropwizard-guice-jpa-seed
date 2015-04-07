@@ -8,8 +8,10 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.junit.*;
+import org.oregami.data.DatabaseFiller;
 import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.*;
+import org.oregami.util.StartHelper;
 
 import javax.persistence.EntityManager;
 import java.util.Iterator;
@@ -17,55 +19,28 @@ import java.util.List;
 
 public class AuditTest {
 
-	private static Injector injector;
-
 	static EntityManager entityManager = null;
 
 	public AuditTest() {
 	}
 
-	@BeforeClass
-	public static void init() {
-		JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
-		injector = Guice.createInjector(jpaPersistModule);
-		injector.getInstance(AuditTest.class);
-		PersistService persistService = injector.getInstance(PersistService.class);
-		persistService.start();
-        entityManager = injector.getInstance(EntityManager.class);
-	}
-
-    @AfterClass
-    public static void finishClass() {
-        DatabaseUtils.clearDatabaseTables();
+    @BeforeClass
+    public static void initClass() {
+        StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
+        entityManager = StartHelper.getInstance(EntityManager.class);
     }
 
-
-//    @Before
-//    public void initTest() {
-//        entityManager.getTransaction().begin();
-//    }
-//
-//    @After
-//    public void finishTest() {
-//        entityManager.getTransaction().rollback();
-//    }
-
-//    @AfterClass
-//    public static void finishClass() {
-//        DatabaseUtils.clearDatabaseTables();
-//    }
-
-
-	private <T> T getInstance(Class<T> c) {
-		return injector.getInstance(c);
-	}
+    @AfterClass
+    public static void finish() {
+        StartHelper.getInstance(DatabaseFiller.class).dropAllData();
+    }
 
 
 	@Test
 	public void testTask() {
 
         entityManager.getTransaction().begin();
-		TaskDao taskDao = getInstance(TaskDao.class);
+		TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
 
 		Task t1 = new Task("task 1");
 		String id1 = taskDao.save(t1);
@@ -168,7 +143,7 @@ public class AuditTest {
 
     @Test
     public void testLanguage() {
-        LanguageDao languageDao = getInstance(LanguageDao.class);
+        LanguageDao languageDao = StartHelper.getInstance(LanguageDao.class);
 
         entityManager.getTransaction().begin();
         Language en = new Language(Language.ENGLISH);
@@ -228,7 +203,7 @@ public class AuditTest {
     public void testTaskWithChangedLanguage() {
 
 
-        LanguageDao languageDao = getInstance(LanguageDao.class);
+        LanguageDao languageDao = StartHelper.getInstance(LanguageDao.class);
 
         entityManager.getTransaction().begin();
         Language en = new Language(Language.ENGLISH);
@@ -245,7 +220,7 @@ public class AuditTest {
 
 
         entityManager.getTransaction().begin();
-        TaskDao taskDao = getInstance(TaskDao.class);
+        TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
 
         Task t1 = new Task("task 1");
         t1.setLanguage(en);

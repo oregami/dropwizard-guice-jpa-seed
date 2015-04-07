@@ -15,6 +15,9 @@ import org.oregami.entities.Task;
 import org.oregami.service.LanguageService;
 import org.oregami.service.ServiceResult;
 import org.oregami.service.TaskService;
+import org.oregami.util.StartHelper;
+
+import javax.persistence.EntityManager;
 
 /**
  * Class to fill the database with some sample entities.
@@ -25,9 +28,6 @@ public class DatabaseFiller {
 
 	static DatabaseFiller instance = null;
 
-	static Injector injector;
-
-
 	@Transactional
 	public void initData() {
 		addLanguages();
@@ -35,20 +35,8 @@ public class DatabaseFiller {
 	}
 
 
-    public static DatabaseFiller getInstance() {
-
-		if (instance==null) {
-			JpaPersistModule jpaPersistModule = ToDoApplication.createJpaModule();
-			injector = Guice.createInjector(jpaPersistModule);
-			instance = injector.getInstance(DatabaseFiller.class);
-			PersistService persistService = injector.getInstance(PersistService.class);
-			persistService.start();
-		}
-		return instance;
-	}
-
 	private void addLanguages() {
-        LanguageService languageService = injector.getInstance(LanguageService.class);
+        LanguageService languageService = StartHelper.getInstance(LanguageService.class);
         Language english = new Language("english");
         english.setDescription("This is the english language");
         ServiceResult<Language> languageServiceResult = languageService.createNewEntity(english, null);
@@ -65,8 +53,8 @@ public class DatabaseFiller {
     }
 
     private void addTasks() {
-        TaskService taskService = injector.getInstance(TaskService.class);
-        LanguageDao languageDao = injector.getInstance(LanguageDao.class);
+        TaskService taskService = StartHelper.getInstance(TaskService.class);
+        LanguageDao languageDao = StartHelper.getInstance(LanguageDao.class);
         Task t1 = new Task("task 1");
         t1.setDescription("This is task 1");
         t1.setLanguage(languageDao.findByExactName("english"));
@@ -88,5 +76,11 @@ public class DatabaseFiller {
             throw new RuntimeException(taskServiceResult.getErrors().toString());
         }
 
+    }
+
+    @Transactional
+    public void dropAllData() {
+        EntityManager em = StartHelper.getInstance(EntityManager.class);
+        em.createNativeQuery("TRUNCATE SCHEMA public AND COMMIT NO CHECK").executeUpdate();
     }
 }

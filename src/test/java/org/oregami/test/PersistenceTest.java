@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oregami.data.DatabaseFiller;
 import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.*;
@@ -20,47 +21,22 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import org.oregami.util.StartHelper;
 
 public class PersistenceTest {
-
-	private static Injector injector;
-
-	EntityManager entityManager = null;
 
 	public PersistenceTest() {
 	}
 
-	@BeforeClass
-	public static void init() {
-		JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
-		injector = Guice.createInjector(jpaPersistModule);
-		injector.getInstance(PersistenceTest.class);
-		PersistService persistService = injector.getInstance(PersistService.class);
-		persistService.start();
-	}
-
-	@Before
-	public void startTx() {
-		if (entityManager==null) {
-			entityManager = injector.getInstance(EntityManager.class);
-		}
-		entityManager.getTransaction().begin();
-
-	}
-
-	@After
-	public void rollbackTx() {
-		entityManager.getTransaction().rollback();
-	}
-
-	private <T> T getInstance(Class<T> c) {
-		return injector.getInstance(c);
-	}
+    @BeforeClass
+    public static void initClass() {
+        StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
+    }
 
 
 	@Test
 	public void testTask() {
-		TaskDao taskDao = getInstance(TaskDao.class);
+		TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
 
 		Task t1 = new Task("task 1");
 		String id1 = taskDao.save(t1);
@@ -89,15 +65,12 @@ public class PersistenceTest {
 
     @Test
     public void testTaskRevisions() {
-        TaskDao taskDao = getInstance(TaskDao.class);
+        TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
 
         Task t1 = new Task("task 1");
         String id1 = taskDao.save(t1);
         Assert.assertNotNull("ID expected", id1);
 
-        entityManager.getTransaction().commit();
-
-        entityManager.getTransaction().begin();
 
         Task t1Loaded = taskDao.findOne(id1);
         Assert.assertNotNull(t1Loaded);
@@ -107,22 +80,21 @@ public class PersistenceTest {
         t1Loaded.setDescription("update");
         taskDao.update(t1Loaded);
 
-        entityManager.getTransaction().commit();
-
-        entityManager.getTransaction().begin();
 
         List<RevisionInfo> revisions = taskDao.findRevisions(id1);
         Assert.assertNotNull(revisions);
         Assert.assertEquals(2, revisions.size());
 
-        DatabaseUtils.clearDatabaseTables();
     }
 
 
 
     @Test
     public void testSubTask() {
-        TaskDao taskDao = getInstance(TaskDao.class);
+        TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
+
+        List<Task> all = taskDao.findAll();
+        int size = all.size();
 
         Task t1 = new Task("task 1");
 
@@ -134,8 +106,8 @@ public class PersistenceTest {
         Assert.assertNotNull("ID expected", id1);
         String sid1 = s1.getId();
 
-        List<Task> all = taskDao.findAll();
-        Assert.assertTrue("1 Task expected", all.size()==1);
+        all = taskDao.findAll();
+        Assert.assertTrue((size+1) + " Tasks expected", all.size()==size+1);
 
         Task taskLoaded = taskDao.findOne(id1);
         Assert.assertNotNull(taskLoaded);
@@ -152,8 +124,11 @@ public class PersistenceTest {
 
     @Test
     public void testMultipleSubTask() {
-        TaskDao taskDao = getInstance(TaskDao.class);
-        LanguageDao languageDao = injector.getInstance(LanguageDao.class);
+        TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
+        LanguageDao languageDao = StartHelper.getInstance(LanguageDao.class);
+
+        List<Task> all = taskDao.findAll();
+        int size = all.size();
 
         Language de = new Language(Language.GERMAN);
         de.setDescription("description de1");
@@ -175,8 +150,8 @@ public class PersistenceTest {
         String sid1 = s1.getId();
         String sid2 = s2.getId();
 
-        List<Task> all = taskDao.findAll();
-        Assert.assertTrue("1 Task expected", all.size()==1);
+        all = taskDao.findAll();
+        Assert.assertTrue((size+1) + " Tasks expected", all.size()==size+1);
 
         Task taskLoaded = taskDao.findOne(id1);
         Assert.assertNotNull(taskLoaded);
@@ -200,7 +175,7 @@ public class PersistenceTest {
 
     @Test
     public void testLanguage() {
-        LanguageDao languageDao = injector.getInstance(LanguageDao.class);
+        LanguageDao languageDao = StartHelper.getInstance(LanguageDao.class);
         Language eng = new Language(Language.ENGLISH);
         eng.setDescription("description eng1");
         languageDao.save(eng);
@@ -215,12 +190,6 @@ public class PersistenceTest {
         Assert.assertEquals(2, all.size());
 
     }
-
-
-
-
-
-
 
 
 }

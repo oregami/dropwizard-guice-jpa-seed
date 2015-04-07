@@ -1,15 +1,11 @@
 package org.oregami.service;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import org.junit.*;
-import org.oregami.dropwizard.ToDoApplication;
+import org.oregami.data.DatabaseFiller;
 import org.oregami.dropwizard.User;
 import org.oregami.entities.Task;
-import org.oregami.test.DatabaseUtils;
-import org.oregami.test.PersistenceTest;
+import org.oregami.util.StartHelper;
 
 import javax.persistence.EntityManager;
 
@@ -18,28 +14,22 @@ import javax.persistence.EntityManager;
  */
 public class TestTaskService {
 
-    static Injector injector = null;
-
     private EntityManager entityManager;
 
     @BeforeClass
-    public static void init() {
-        JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
-        injector = Guice.createInjector(jpaPersistModule);
-        injector.getInstance(PersistenceTest.class);
-        PersistService persistService = injector.getInstance(PersistService.class);
-        persistService.start();
+    public static void initClass() {
+        StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
     }
 
     @AfterClass
-    public static void finishClass() {
-        DatabaseUtils.clearDatabaseTables();
+    public static void finish() {
+        StartHelper.getInstance(DatabaseFiller.class).dropAllData();
     }
 
     @Before
     public void startTx() {
         if (entityManager==null) {
-            entityManager = injector.getInstance(EntityManager.class);
+            entityManager = StartHelper.getInstance(EntityManager.class);
         }
         entityManager.getTransaction().begin();
 
@@ -52,7 +42,7 @@ public class TestTaskService {
 
     @Test
     public void saveTaskWithoutError() {
-        TaskService service = injector.getInstance(TaskService.class);
+        TaskService service = StartHelper.getInstance(TaskService.class);
 
         Task t = new Task("name");
         t.setDescription("this is a description");

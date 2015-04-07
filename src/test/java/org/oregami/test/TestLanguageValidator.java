@@ -13,26 +13,22 @@ import org.oregami.service.FieldNames;
 import org.oregami.service.ServiceError;
 import org.oregami.service.ServiceErrorContext;
 import org.oregami.service.ServiceErrorMessage;
+import org.oregami.util.StartHelper;
 import org.oregami.validation.LanguageValidator;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public class TestLanguageValidator {
-
-	static Injector injector = null;
 
 	ServiceError errorNameTooShort = new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_TOO_SHORT);
 	ServiceError errorNameEmpty = new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_EMPTY);
 	ServiceError errorDescriptionEmpty = new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_DESCRIPTION), ServiceErrorMessage.LANGUAGE_DESCRIPTION_EMPTY);
 
-	@BeforeClass
-	public static void init() {
-		JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
-		injector = Guice.createInjector(jpaPersistModule);
-		injector.getInstance(PersistenceTest.class);
-		PersistService persistService = injector.getInstance(PersistService.class);
-		persistService.start();
-	}
+    @BeforeClass
+    public static void initClass() {
+        StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
+    }
 
 	@Test
 	public void testNameEmpty() {

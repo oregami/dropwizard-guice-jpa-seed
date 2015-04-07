@@ -9,6 +9,7 @@ import org.oregami.dropwizard.ToDoApplication;
 import org.oregami.entities.Language;
 import org.oregami.entities.LanguageDao;
 import org.oregami.test.PersistenceTest;
+import org.oregami.util.StartHelper;
 
 import javax.persistence.EntityManager;
 
@@ -16,8 +17,6 @@ import javax.persistence.EntityManager;
  * Created by sebastian on 25.08.14.
  */
 public class TestLanguageService {
-
-    static Injector injector = null;
 
     ServiceError errorNameTooShort = new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_TOO_SHORT);
     ServiceError errorNameEmpty = new ServiceError(new ServiceErrorContext(FieldNames.LANGUAGE_NAME), ServiceErrorMessage.LANGUAGE_NAME_EMPTY);
@@ -27,18 +26,14 @@ public class TestLanguageService {
     private EntityManager entityManager;
 
     @BeforeClass
-    public static void init() {
-        JpaPersistModule jpaPersistModule = new JpaPersistModule(ToDoApplication.JPA_UNIT);
-        injector = Guice.createInjector(jpaPersistModule);
-        injector.getInstance(PersistenceTest.class);
-        PersistService persistService = injector.getInstance(PersistService.class);
-        persistService.start();
+    public static void initClass() {
+        StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
     }
 
     @Before
     public void startTx() {
         if (entityManager==null) {
-            entityManager = injector.getInstance(EntityManager.class);
+            entityManager = StartHelper.getInstance(EntityManager.class);
         }
         entityManager.getTransaction().begin();
 
@@ -52,8 +47,8 @@ public class TestLanguageService {
 
     @Test
     public void emptyDescriptionShouldGiveError() {
-        LanguageService service = injector.getInstance(LanguageService.class);
-        LanguageDao dao = injector.getInstance(LanguageDao.class);
+        LanguageService service = StartHelper.getInstance(LanguageService.class);
+        LanguageDao dao = StartHelper.getInstance(LanguageDao.class);
 
         Language l = new Language("english");
         ServiceResult<Language> result = service.createNewEntity(l, null);
@@ -67,8 +62,8 @@ public class TestLanguageService {
 
     @Test
     public void emptyNameShouldGiveError() {
-        LanguageService service = injector.getInstance(LanguageService.class);
-        LanguageDao dao = injector.getInstance(LanguageDao.class);
+        LanguageService service = StartHelper.getInstance(LanguageService.class);
+        LanguageDao dao = StartHelper.getInstance(LanguageDao.class);
 
         Language l = new Language();
         l.setDescription("this is a description");
@@ -89,8 +84,8 @@ public class TestLanguageService {
 
     @Test
     public void saveLanguageWithoutErrorButWithErrorOnUpdate() {
-        LanguageService service = injector.getInstance(LanguageService.class);
-        LanguageDao dao = injector.getInstance(LanguageDao.class);
+        LanguageService service = StartHelper.getInstance(LanguageService.class);
+        LanguageDao dao = StartHelper.getInstance(LanguageDao.class);
 
         Language l = new Language("name");
         l.setDescription("this is a description");
