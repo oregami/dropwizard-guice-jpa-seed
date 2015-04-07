@@ -7,11 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.oregami.data.DatabaseFiller;
 import org.oregami.data.RevisionInfo;
 import org.oregami.dropwizard.ToDoApplication;
@@ -33,8 +29,13 @@ public class PersistenceTest {
         StartHelper.init(StartHelper.CONFIG_FILENAME_TEST);
     }
 
+    @AfterClass
+    public static void finish() {
+        StartHelper.getInstance(DatabaseFiller.class).dropAllData();
+    }
 
-	@Test
+
+    @Test
 	public void testTask() {
 		TaskDao taskDao = StartHelper.getInstance(TaskDao.class);
 
