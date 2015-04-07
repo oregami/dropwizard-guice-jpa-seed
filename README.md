@@ -5,21 +5,21 @@ dropwizard-guice-jpa-seed
 This a sample REST application written in Java. It's purpose is to create a generic project that can be used as a starting point for a new project, but also for learning efforts (I am building an open game database at www.oregami.org).
 
 - built on [Dropwizard](https://dropwizard.github.io/dropwizard/) version 0.7.0
-- dependency injection with [Google Guice](https://code.google.com/p/google-guice/)
+- dependency injection with [Google Guice](https://code.google.com/p/google-guice/) (no Spring dependencies!)
 - [Hibernate](http://hibernate.org/) / JPA 2.1 as database access framework
 - [HSQLDB](http://hsqldb.org/) as database
 - "Session-per-HTTP-request" with Guice [PersistentFilter](https://code.google.com/p/google-guice/wiki/JPA)
 - suport for [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 - JPA entities with [UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier) as primary keys
 - Auditing/Version control of entities with [hibernate envers](http://envers.jboss.org/)
-- authentication with JSON Web Token (work in progress)
+- authentication with JSON Web Token via [dropwizard-auth-jwt](https://github.com/ToastShaman/dropwizard-auth-jwt)
 - Integration tests with [rest-assured](https://code.google.com/p/rest-assured/)
 - a pattern for accessing and manipulation entities with HTTP REST calls (Resource => Service => DAO => entity)
 - a pattern for ServiceResult objects which contain ServiceErrorMessages (which can later be bound to web form fields in the client)
 
 **Feel free to suggest corrections, optimizations or extensions via pull requests!**
 
-A first version of a **JavaScript client application (AngularJS)** is now available at https://github.com/oregami/angularjs-rest-client/
+A corresponding **JavaScript client application (AngularJS)** is available at https://github.com/oregami/angularjs-rest-client/
 
 # system architecture
 
